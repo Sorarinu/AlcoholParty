@@ -6,7 +6,9 @@
      * Time: 17:08
      */
 
-class db
+require_once 'chromelog.php';
+
+class func
 {
     function __construct()
     {
@@ -31,6 +33,20 @@ class db
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $result = $stmt->execute();
         return $result;
+    }
+
+    function login($userId, $password)
+    {
+        $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId' AND password = '$password'");
+
+        foreach($rows as $row)
+        {
+            if(isset($row['id']))
+            {
+                return $row;
+            }
+            return false;
+        }
     }
 
     /*function createTable()
