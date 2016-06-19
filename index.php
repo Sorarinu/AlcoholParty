@@ -5,45 +5,72 @@
  * Date: 2016/06/17
  * Time: 15:00
  */
-define("CRYPT", "CS");
-
 require_once 'chromelog.php';
 require_once 'func.php';
 
 $func = new func();
 
-if (!isset($_SESSION)) {
+if (!isset($_SESSION))
+{
     session_start();
 }
 
-if (isset($_POST["create"])) {
+if (isset($_POST["create"]))
+{
     ChromePhp::log("ルーム作成");
-} else if (isset($_POST["join"])) {
+
+    if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "" && $_POST["roomEmail"] !== "")
+    {
+
+    }
+    else
+    {
+        $createMsg = "Error：必要事項が入力されていません．";
+    }
+}
+else if (isset($_POST["join"]))
+{
     ChromePhp::log("ルーム接続");
-} else if (isset($_POST["signIn"])) {
+}
+else if (isset($_POST["signIn"]))
+{
     $user = $func->login($_POST["userId"], $_POST["userPassword"]);
 
-    if ($user !== null) {
+    if ($user !== null)
+    {
         //セッション保存
         session_regenerate_id(true);
         $_SESSION["id"] = $_POST["userId"];
-    } else {
-        $signInMsg = "ログインに失敗しました．";
-        $_POST = array();   //POSTデータを初期化
+        $_SESSION["nickName"] = $user["nickname"];
     }
-} else if (isset($_POST["signUp"])) {
-    if ($_POST["userId"] !== "" && $_POST["userPassword"] !== "" && $_POST["confUserPassword"] !== "" && $_POST["userNickName"] !== "" && $_POST["userEmail"] !== "") {
-        if ($_POST["userPassword"] === $_POST["confUserPassword"]) {
+    else
+    {
+        $signInMsg = "Error：ログインに失敗しました．";
+        $_POST = array();
+    }
+}
+else if (isset($_POST["signUp"]))
+{
+    if ($_POST["userId"] !== "" && $_POST["userPassword"] !== "" && $_POST["confUserPassword"] !== "" && $_POST["userNickName"] !== "" && $_POST["userEmail"] !== "")
+    {
+        if ($_POST["userPassword"] === $_POST["confUserPassword"])
+        {
             $result = $func->signUp($_POST["userId"], $_POST["userPassword"], $_POST["userNickName"], $_POST["userEmail"]);
-            $signUpMsg = "ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
-        } else {
-            $signUpMsg = "パスワードが一致しません!!";
+            $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
         }
-    } else {
-        $signUpMsg = "すべての項目を入力してください!!";
+        else
+        {
+            $signUpMsg = "Error：パスワードが一致しません";
+        }
+    }
+    else
+    {
+        $signUpMsg = "Error：すべての項目を入力してください";
     }
 
-} else {
+}
+else
+{
     ChromePhp::log("Error..");
 }
 ?>
@@ -70,11 +97,12 @@ if (isset($_POST["create"])) {
 </div>
 
 <?php
-if (isset($_SESSION["id"])) {
+if (isset($_SESSION["id"]))
+{
     ?>
     <div class="container">
         <div class="col-md-12 text-center">
-            ようこそ <?= $user["nickname"] ?> さん　
+            ようこそ <?= $_SESSION["nickName"] ?> さん　
             <button type="button" class="btn-info" onclick="location.href='logout.php'">ログアウト</button>
         </div>
         <br><br><br>
@@ -88,19 +116,36 @@ if (isset($_SESSION["id"])) {
             </div>
 
             <div class="panel-body">
+                <?php
+                    if (isset($createMsg))
+                    {
+                        if ($createMsg !== "")
+                        {
+                            ?>
+                            <div class="alert alert-danger" role="alert"><?= $createMsg ?></div>
+                            <?php
+                        }
+                        else
+                        {
+                            ?>
+                            <div class="alert alert-info" role="alert"><?= $createMsg ?></div>
+                            <?php
+                        }
+                    }
+                ?>
                 <form action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
                     <p>
 
                     <div class="input-group">
                         <span class="input-group-addon">ルーム名</span>
-                        <input type="text" name="room" class="form-control" placeholder="ルーム名を入力">
+                        <input type="text" name="roomName" class="form-control" placeholder="ルーム名を入力">
                     </div>
                     </p>
                     <p>
 
                     <div class="input-group">
                         <span class="input-group-addon">パスワード</span>
-                        <input type="roomPassword" name="password" class="form-control"
+                        <input type="password" name="roomPassword" class="form-control"
                                placeholder="接続する際のパスワードを入力(8文字以上、英数字混在)">
                     </div>
                     </p>
@@ -108,7 +153,7 @@ if (isset($_SESSION["id"])) {
 
                     <div class="input-group">
                         <span class="input-group-addon">パスワード（確認）</span>
-                        <input type="roomPassword" name="confPassword" class="form-control"
+                        <input type="password" name="confRoomPassword" class="form-control"
                                placeholder="もう一度パスワードを入力">
                     </div>
                     </p>
@@ -160,7 +205,9 @@ if (isset($_SESSION["id"])) {
         </div>
     </div>
     <?php
-} else {
+}
+else
+{
     ?>
 
     <!-- ユーザ登録 -->
@@ -172,12 +219,16 @@ if (isset($_SESSION["id"])) {
 
             <div class="panel-body">
                 <?php
-                if (isset($signUpMsg)) {
-                    if ($signUpMsg !== "ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！") {
+                if (isset($signUpMsg))
+                {
+                    if ($signUpMsg !== "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！")
+                    {
                         ?>
                         <div class="alert alert-danger" role="alert"><?= $signUpMsg ?></div>
                         <?php
-                    } else {
+                    }
+                    else
+                    {
                         ?>
                         <div class="alert alert-info" role="alert"><?= $signUpMsg ?></div>
                         <?php
@@ -244,12 +295,16 @@ if (isset($_SESSION["id"])) {
 
             <div class="panel-body">
                 <?php
-                if (isset($signInMsg)) {
-                    if ($signInMsg === "ログインに失敗しました．") {
+                if (isset($signInMsg))
+                {
+                    if ($signInMsg === "Error：ログインに失敗しました．")
+                    {
                         ?>
                         <div class="alert alert-danger" role="alert"><?= $signInMsg ?></div>
                         <?php
-                    } else {
+                    }
+                    else
+                    {
                         ?>
                         <div class="alert alert-info" role="alert"><?= $signInMsg ?></div>
                         <?php
