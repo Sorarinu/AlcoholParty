@@ -40,8 +40,11 @@ else if (isset($_POST["signIn"]))
     {
         //セッション保存
         session_regenerate_id(true);
-        $_SESSION["id"] = $_POST["userId"];
-        $_SESSION["nickName"] = $user["nickname"];
+        $_SESSION = array(
+            "id" => $user["id"],
+            "nickName" => $user["nickname"],
+            "email" => $user["email"]
+        );
     }
     else
     {
