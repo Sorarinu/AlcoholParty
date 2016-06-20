@@ -26,12 +26,7 @@ class func
 
     function signUp($userId, $password, $nickName, $email)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (id, password, nickname, email) VALUES (:id, :password, :nickname, :email)");
-        $stmt->bindParam(':id', $userId, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->bindParam(':nickname', $nickName, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $result = $stmt->execute();
+        $result = $this->pdo->prepare("INSERT INTO users (id, password, nickname, email) VALUES ('$userId', '$password', '$nickName', '$email')");
         return $result;
     }
 
@@ -46,6 +41,32 @@ class func
                 return $row;
             }
             return false;
+        }
+    }
+
+    function createRoom($nickName, $room, $password, $email)
+    {
+        $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room'");
+
+        foreach($rows as $row)
+        {
+            if(isset($row['room']))
+            {
+                return -1;
+            }
+        }
+
+        $result = $this->pdo->query("INSERT INTO room (nickname, room, password, email) VALUES ('$nickName', '$room', '$password', '$email')");
+        return $result;
+    }
+
+    function getRoomInfo($room)
+    {
+        $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room'");
+
+        foreach($rows as $row)
+        {
+            return $row;
         }
     }
 

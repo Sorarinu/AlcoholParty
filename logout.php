@@ -30,7 +30,7 @@
 <html>
     <head>
         <title>飲み会やろうぜ</title>
-        <META http-equiv="refresh" content="1; url=index.php"> <!-- 3秒後にログインページへ -->
+        <META http-equiv="refresh" content="1; url=index.php"> <!-- 自動的にログインページへ -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
 
@@ -41,16 +41,13 @@
     <body>
         <div class="container">
             <div class="jumbotron text-center">
-                <p>
-
-                <h1>飲み会やろうぜ 待ち合わせサイト</h1></p>
+                <p><h1><a href="index.php">飲み会やろうぜ 待ち合わせサイト</a></h1></p>
                 <p>飲み会の待ち合わせで「お前ら何処だよ？？？」「お前こそ何処だよ？？？？」を解消するためのサービスです。</p>
             </div>
         </div>
 
         <div class="container text-center">
-                <?php echo $msg ?><br>3秒後にトップページへ移動します．
+                <?php echo $msg ?><br>自動的ににトップページへ移動します．
         </div>
     </body>
 </html>
-

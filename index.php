@@ -21,11 +21,31 @@ if (isset($_POST["create"]))
 
     if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "" && $_POST["roomEmail"] !== "")
     {
+        if($_POST["roomPassword"] === $_POST["confRoomPassword"])
+        {
+            $result = $func->createRoom($_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_POST["roomEmail"]);
 
+            if($result === -1)
+            {
+                $createMsg = "Error：入力されたルーム名は既に使用されています";
+                $_POST = array();
+            }
+            else
+            {
+                $createMsg = "Success：新規ルームの作成が完了しました．";
+                $_SESSION += array("roomName" => $_POST["roomName"]);
+            }
+        }
+        else
+        {
+            $createMsg = "Error：パスワードが一致しません";
+            $_POST = array();
+        }
     }
     else
     {
-        $createMsg = "Error：必要事項が入力されていません．";
+        $createMsg = "Error：必要事項が入力されていません";
+        $_POST = array();
     }
 }
 else if (isset($_POST["join"]))
@@ -48,7 +68,7 @@ else if (isset($_POST["signIn"]))
     }
     else
     {
-        $signInMsg = "Error：ログインに失敗しました．";
+        $signInMsg = "Error：ログインに失敗しました";
         $_POST = array();
     }
 }
@@ -64,11 +84,13 @@ else if (isset($_POST["signUp"]))
         else
         {
             $signUpMsg = "Error：パスワードが一致しません";
+            $_POST = array();
         }
     }
     else
     {
-        $signUpMsg = "Error：すべての項目を入力してください";
+        $signUpMsg = "Error：必要事項が入力されていません";
+        $_POST = array();
     }
 
 }
@@ -92,9 +114,7 @@ else
 <body>
 <div class="container">
     <div class="jumbotron text-center">
-        <p>
-
-        <h1>飲み会やろうぜ 待ち合わせサイト</h1></p>
+        <p><h1><a href="index.php">飲み会やろうぜ 待ち合わせサイト</a></h1></p>
         <p>飲み会の待ち合わせで「お前ら何処だよ？？？」「お前こそ何処だよ？？？？」を解消するためのサービスです。</p>
     </div>
 </div>
@@ -122,7 +142,7 @@ if (isset($_SESSION["id"]))
                 <?php
                     if (isset($createMsg))
                     {
-                        if ($createMsg !== "")
+                        if ($createMsg !== "Success：新規ルームの作成が完了しました．")
                         {
                             ?>
                             <div class="alert alert-danger" role="alert"><?= $createMsg ?></div>
@@ -131,7 +151,7 @@ if (isset($_SESSION["id"]))
                         else
                         {
                             ?>
-                            <div class="alert alert-info" role="alert"><?= $createMsg ?></div>
+                            <div class="alert alert-success" role="alert"><?= $createMsg ?> <a href="roomPage.php" class="alert-link">詳細・設定ページへ</a></div>
                             <?php
                         }
                     }
@@ -178,7 +198,7 @@ if (isset($_SESSION["id"]))
 
     <!-- 既存ルームへの接続 -->
     <div class="col-md-6">
-        <div class="panel panel-success">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 既存のルームに接続する
             </div>
@@ -233,7 +253,7 @@ else
                     else
                     {
                         ?>
-                        <div class="alert alert-info" role="alert"><?= $signUpMsg ?></div>
+                        <div class="alert alert-success" role="alert"><?= $signUpMsg ?></div>
                         <?php
                     }
                 }
@@ -291,7 +311,7 @@ else
 
     <!-- ログイン -->
     <div class="col-md-6">
-        <div class="panel panel-success">
+        <div class="panel panel-info">
             <div class="panel-heading">
                 ユーザログイン
             </div>
@@ -309,7 +329,7 @@ else
                     else
                     {
                         ?>
-                        <div class="alert alert-info" role="alert"><?= $signInMsg ?></div>
+                        <div class="alert alert-success" role="alert"><?= $signInMsg ?></div>
                         <?php
                     }
                 }
