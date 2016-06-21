@@ -23,7 +23,7 @@ if (isset($_POST["create"]))
     {
         if($_POST["roomPassword"] === $_POST["confRoomPassword"])
         {
-            $result = $func->createRoom($_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_POST["roomEmail"]);
+            $result = $func->createRoom($_SESSION["id"], $_POST["roomName"], $_POST["roomPassword"], $_POST["roomEmail"]);
 
             if($result === -1)
             {
@@ -51,6 +51,25 @@ if (isset($_POST["create"]))
 else if (isset($_POST["join"]))
 {
     ChromePhp::log("ルーム接続");
+
+    if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "")
+    {
+        $result = $func->join($_POST["roomName"], $_POST["roomPassword"]);
+
+        if($result !== null)
+        {
+            $_SESSION += array("roomName" => $_POST["roomName"]);
+            $_POST = array();
+            header("Location: roomPage.php");
+            exit;
+        }
+        else
+        {
+            $joinMsg = "Error：該当するルームが存在しません";
+            unset($_SESSION["roomName"]);
+            $_POST = array();
+        }
+    }
 }
 else if (isset($_POST["signIn"]))
 {
@@ -78,8 +97,16 @@ else if (isset($_POST["signUp"]))
     {
         if ($_POST["userPassword"] === $_POST["confUserPassword"])
         {
-            $result = $func->signUp($_POST["userId"], $_POST["userPassword"], $_POST["userNickName"], $_POST["userEmail"]);
-            $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
+            if($func->checkUserId($_POST["userid"]) !== -1)
+            {
+                $result = $func->signUp($_POST["userId"], $_POST["userPassword"], $_POST["userNickName"], $_POST["userEmail"]);
+                $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
+            }
+            else
+            {
+                $signUpMsg = "Error：入力されたIDは使用できません";
+                $_POST = array();
+            }
         }
         else
         {
@@ -204,6 +231,17 @@ if (isset($_SESSION["id"]))
             </div>
 
             <div class="panel-body">
+                <?php
+                    if (isset($joinMsg))
+                    {
+                        if ($joinMsg === "Error：該当するルームが存在しません")
+                        {
+                            ?>
+                            <div class="alert alert-danger" role="alert"><?= $joinMsg ?></div>
+                            <?php
+                        }
+                    }
+                ?>
                 <form action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
                     <p>
 
@@ -320,7 +358,7 @@ else
                 <?php
                 if (isset($signInMsg))
                 {
-                    if ($signInMsg === "Error：ログインに失敗しました．")
+                    if ($signInMsg === "Error：ログインに失敗しました")
                     {
                         ?>
                         <div class="alert alert-danger" role="alert"><?= $signInMsg ?></div>
