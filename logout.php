@@ -30,7 +30,9 @@
 <html>
     <head>
         <title>飲み会やろうぜ</title>
-        <META http-equiv="refresh" content="1; url=index.php"> <!-- 自動的にログインページへ -->
+        <meta http-equiv="refresh" content="1; url=index.php"> <!-- 自動的にログインページへ -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
 
