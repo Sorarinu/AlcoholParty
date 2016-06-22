@@ -17,4 +17,7 @@
     }
 
     $func->removeRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
+
+    unset($_SESSION["roomName"]);
+
 ?>

@@ -73,18 +73,23 @@
         if (isset($_SESSION["id"]))
         {
             ?>
-            <div class="container">
-                <div class="col-md-12 text-center">
+            <p>
+                <div class="col-md-12 text-right">
                     ようこそ <?= $_SESSION["nickName"] ?> さん　
-                    <button type="button" class="btn-info" onclick="location.href='logout.php'">ログアウト</button>
+                    <button type="button" class="btn-info" onclick="location.href='logout.php'">ログアウト</button><br><br>
                 </div>
-                <br><br><br>
-            </div>
+            </P>
 
             <?php
             if($_SESSION["nickName"] === $roomInfo["nickname"])
             {
                 ?>
+
+                <p>
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn-danger" onclick="location.href='deleteRoom.php'">ルームを削除する</button><br><br>
+                    </div>
+                </p>
 
                 <div class="col-md-4">
                     <form method="post" action="<?php print($_SERVER['PHP_SELF']) ?>">

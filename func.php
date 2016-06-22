@@ -193,14 +193,52 @@ class func
         return $this->pdo->query("INSERT INTO $room VALUES ('$user')");
     }
 
+    /**
+     * 接続中のユーザ情報を消す
+     *
+     * @param $user
+     * @param $room
+     *
+     * @return PDOStatement
+     */
     function removeRoomMember($user, $room)
     {
         return $this->pdo->query("DELETE FROM $room WHERE joinUser = '$user'");
     }
 
+    /**
+     * 接続中のユーザを取得
+     *
+     * @param $room
+     *
+     * @return PDOStatement
+     */
     function getRoomMember($room)
     {
         return $this->pdo->query("SELECT * FROM $room");
+    }
+
+    /**
+     * ルーム一覧を取得する
+     *
+     * @return PDOStatement
+     */
+    function getRoom()
+    {
+        return $this->pdo->query("SELECT * FROM room");
+    }
+
+    /**
+     * 指定のルームを削除する
+     *
+     * @param $room
+     * @param $id
+     *
+     * @return PDOStatement
+     */
+    function deleteRoom($room, $id)
+    {
+        return $this->pdo->query("DELETE FROM room WHERE room = '$room' AND id = '$id'");
     }
 }
 ?>

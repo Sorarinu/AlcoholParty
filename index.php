@@ -260,6 +260,25 @@ if (isset($_SESSION["id"]))
             </div>
         </div>
     </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">ルーム一覧</div>
+                <?php
+                    $rooms = $func->getRoom();
+
+                    foreach($rooms as $room)
+                    {
+                ?>
+                        <ul class="list-group">
+                            <li class="list-group-item"><?= $room["room"]; ?></li>
+                        </ul>
+                <?php
+                    }
+                ?>
+            </div>
+        </div>
+    </div>
     <?php
 }
 else
@@ -389,6 +408,25 @@ else
                         <input type="submit" name="signIn" class="btn btn-primary btn-lg center-block" value="ログイン">
                     </p>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">ルーム一覧</div>
+                <?php
+                    $rooms = $func->getRoom();
+
+                    foreach($rooms as $room)
+                    {
+                ?>
+                        <ul class="list-group">
+                            <li class="list-group-item"><?= $room["room"]; ?></li>
+                        </ul>
+                <?php
+                    }
+                ?>
             </div>
         </div>
     </div>

@@ -13,6 +13,8 @@
         session_start();
     }
 
+   // require_once 'leaveRoom.php';
+
     if(!isset($_SESSION["id"]))
     {
         $msg = "セッションがタイムアウトしました";
