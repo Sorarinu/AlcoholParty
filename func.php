@@ -233,12 +233,11 @@ class func
      *
      * @param $room
      * @param $id
-     *
-     * @return PDOStatement
      */
     function deleteRoom($room, $id)
     {
-        return $this->pdo->query("DELETE FROM room WHERE room = '$room' AND id = '$id'");
+        $this->pdo->query("DELETE FROM room WHERE room = '$room' AND id = '$id'");
+        $this->pdo->query("DROP TABLE $room");
     }
 }
 ?>

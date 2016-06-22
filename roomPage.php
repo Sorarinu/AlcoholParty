@@ -21,7 +21,8 @@
 
     if(isset($_POST["update"]))
     {
-        $result = $func->updateRoomInfo($roomInfo["room"],
+        $result = $func->updateRoomInfo(
+            $roomInfo["room"],
             $_POST["place"] !== "" ? $_POST["place"] : $roomInfo["place"],
             $_POST["datetime"] !== "" ? $_POST["datetime"] : $roomInfo["date"],
             $_POST["budget"] !== "" ? $_POST["budget"] : $roomInfo["budget"],
@@ -76,7 +77,7 @@
             <p>
                 <div class="col-md-12 text-right">
                     ようこそ <?= $_SESSION["nickName"] ?> さん　
-                    <button type="button" class="btn-info" onclick="location.href='logout.php'">ログアウト</button><br><br>
+                    <input type="button" class="btn-info" onclick="location.href='logout.php'" value="ログアウト"><br><br>
                 </div>
             </P>
 

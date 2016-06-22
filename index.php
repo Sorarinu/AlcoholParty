@@ -152,13 +152,12 @@ else
 if (isset($_SESSION["id"]))
 {
     ?>
-    <div class="container">
-        <div class="col-md-12 text-center">
+    <p>
+        <div class="col-md-12 text-right">
             ようこそ <?= $_SESSION["nickName"] ?> さん　
-            <button type="button" class="btn-info" onclick="location.href='logout.php'">ログアウト</button>
+            <input type="button" class="btn-info" onclick="location.href='logout.php'" value="ログアウト"><br><br>
         </div>
-        <br><br><br>
-    </div>
+    </P>
 
     <!-- 新規ルーム作成 -->
     <div class="col-md-6">
@@ -408,25 +407,6 @@ else
                         <input type="submit" name="signIn" class="btn btn-primary btn-lg center-block" value="ログイン">
                     </p>
                 </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-12">
-        <div class="panel panel-info">
-            <div class="panel-heading">ルーム一覧</div>
-                <?php
-                    $rooms = $func->getRoom();
-
-                    foreach($rooms as $room)
-                    {
-                ?>
-                        <ul class="list-group">
-                            <li class="list-group-item"><?= $room["room"]; ?></li>
-                        </ul>
-                <?php
-                    }
-                ?>
             </div>
         </div>
     </div>

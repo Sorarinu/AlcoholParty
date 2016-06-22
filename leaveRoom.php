@@ -11,13 +11,10 @@
 
     $func = new func();
 
-    if(!isset($_SESSION))
+    if (!isset($_SESSION))
     {
         session_start();
     }
 
     $func->removeRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
-
-    unset($_SESSION["roomName"]);
-
 ?>

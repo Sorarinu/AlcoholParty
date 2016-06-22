@@ -7,13 +7,12 @@
  */
 
     require_once 'chromelog.php';
+    require_once 'leaveRoom.php';
 
     if(!isset($_SESSION))
     {
         session_start();
     }
-
-   // require_once 'leaveRoom.php';
 
     if(!isset($_SESSION["id"]))
     {
@@ -51,7 +50,7 @@
         </div>
 
         <div class="container text-center">
-                <?php echo $msg ?><br>自動的ににトップページへ移動します．
+            <?php echo $msg ?><br>自動的ににトップページへ移動します．
         </div>
     </body>
 </html>
