@@ -41,7 +41,7 @@ function errorFunc(error) {
         3: "Error: Timeout"
     };
 
-    alert(errorMessage[error.code]);
+    //alert(errorMessage[error.code]);
 }
 
 var optionObj = {

@@ -17,13 +17,11 @@ if (!isset($_SESSION))
 
 if (isset($_POST["create"]))
 {
-    ChromePhp::log("ルーム作成");
-
-    if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "" && $_POST["roomEmail"] !== "")
+    if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "")
     {
         if($_POST["roomPassword"] === $_POST["confRoomPassword"])
         {
-            $result = $func->createRoom($_SESSION["id"], $_POST["roomName"], $_POST["roomPassword"], $_POST["roomEmail"]);
+            $result = $func->createRoom($_SESSION["id"],$_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_SESSION["email"]);
 
             if($result === -1)
             {
@@ -32,6 +30,8 @@ if (isset($_POST["create"]))
             }
             else
             {
+                $func->createRoomTable($_POST["roomName"]);
+
                 $createMsg = "Success：新規ルームの作成が完了しました．";
                 $_SESSION += array("roomName" => $_POST["roomName"]);
             }
@@ -50,8 +50,6 @@ if (isset($_POST["create"]))
 }
 else if (isset($_POST["join"]))
 {
-    ChromePhp::log("ルーム接続");
-
     if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "")
     {
         $result = $func->join($_POST["roomName"], $_POST["roomPassword"]);
@@ -73,7 +71,10 @@ else if (isset($_POST["join"]))
 }
 else if (isset($_POST["signIn"]))
 {
-    $user = $func->login($_POST["userId"], $_POST["userPassword"]);
+    $userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $userPassword = filter_input(INPUT_POST, "userPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    $user = $func->login($userId, $userPassword);
 
     if ($user !== null)
     {
@@ -97,9 +98,9 @@ else if (isset($_POST["signUp"]))
     {
         if ($_POST["userPassword"] === $_POST["confUserPassword"])
         {
-            if($func->checkUserId($_POST["userid"]) !== -1)
+            if($func->checkUserId(htmlspecialchars($_POST["userid"])) !== -1)
             {
-                $result = $func->signUp($_POST["userId"], $_POST["userPassword"], $_POST["userNickName"], $_POST["userEmail"]);
+                $result = $func->signUp(htmlspecialchars($_POST["userId"]), htmlspecialchars($_POST["userPassword"]), htmlspecialchars($_POST["userNickName"]), htmlspecialchars($_POST["userEmail"]));
                 $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
             }
             else
@@ -126,7 +127,6 @@ else
     ChromePhp::log("Error..");
 }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -207,13 +207,6 @@ if (isset($_SESSION["id"]))
                         <span class="input-group-addon">パスワード（確認）</span>
                         <input type="password" name="confRoomPassword" class="form-control"
                                placeholder="もう一度パスワードを入力">
-                    </div>
-                    </p>
-                    <p>
-
-                    <div class="input-group">
-                        <span class="input-group-addon">メールアドレス</span>
-                        <input type="text" name="roomEmail" class="form-control" placeholder="通知用メールアドレスを入力">
                     </div>
                     </p>
                     <p>

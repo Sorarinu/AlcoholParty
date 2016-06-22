@@ -10,6 +10,10 @@ require_once 'chromelog.php';
 
 class func
 {
+    /**
+     * func constructor.
+     * MySQLに接続する
+     */
     function __construct()
     {
         try
@@ -24,6 +28,13 @@ class func
         }
     }
 
+    /**
+     * 既に存在しているユーザか判定
+     *
+     * @param $userId
+     *
+     * @return int
+     */
     function checkUserId($userId)
     {
         $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId'");
@@ -38,10 +49,19 @@ class func
         return 0;
     }
 
+    /**
+     * ユーザ情報をデータベースに保存する
+     *
+     * @param $userId
+     * @param $password
+     * @param $nickName
+     * @param $email
+     *
+     * @return PDOStatement
+     */
     function signUp($userId, $password, $nickName, $email)
     {
-        $result = $this->pdo->query("INSERT INTO users (id, password, nickname, email) VALUES ('$userId', '$password', '$nickName', '$email')");
-        return $result;
+        return $this->pdo->query("INSERT INTO users (id, password, nickname, email) VALUES ('$userId', '$password', '$nickName', '$email')");
     }
 
     function login($userId, $password)
@@ -58,6 +78,17 @@ class func
         }
     }
 
+    /**
+     * 新規ルーム情報をデータベースに保存する
+     *
+     * @param $id
+     * @param $nickname
+     * @param $room
+     * @param $password
+     * @param $email
+     *
+     * @return int|PDOStatement
+     */
     function createRoom($id, $nickname, $room, $password, $email)
     {
         $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room'");
@@ -70,10 +101,16 @@ class func
             }
         }
 
-        $result = $this->pdo->query("INSERT INTO room (id, nickname, room, password, email) VALUES ('$id', '$nickname', '$room', '$password', '$email')");
-        return $result;
+        return $this->pdo->query("INSERT INTO room (id, nickname, room, password, email) VALUES ('$id', '$nickname', '$room', '$password', '$email')");
     }
 
+    /**
+     * ルーム情報を返す
+     *
+     * @param $room
+     *
+     * @return mixed
+     */
     function getRoomInfo($room)
     {
         $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room'");
@@ -84,6 +121,14 @@ class func
         }
     }
 
+    /**
+     * 既存ルームに接続する
+     *
+     * @param $room
+     * @param $password
+     *
+     * @return null
+     */
     function join($room, $password)
     {
         $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room' AND password = '$password'");
@@ -98,11 +143,64 @@ class func
         }
     }
 
+    /**
+     * ルーム情報を更新する
+     *
+     * @param $room
+     * @param $place
+     * @param $date
+     * @param $budget
+     * @param $note
+     *
+     * @return PDOStatement
+     */
     function updateRoomInfo($room, $place, $date, $budget, $note)
     {
-        $result = $this->pdo->query("UPDATE room SET place = '$place', date = '$date', budget = '$budget', note = '$note' WHERE room = '$room'");
+        return $this->pdo->query("UPDATE room SET place = '$place', date = '$date', budget = '$budget', note = '$note' WHERE room = '$room'");
+    }
 
-        return $result;
+    /**
+     * 接続人数確認用テーブルを作成する
+     *
+     * @param $room
+     *
+     * @return PDOStatement
+     */
+    function createRoomTable($room)
+    {
+        return $this->pdo->query("CREATE TABLE $room (joinUser TEXT NOT NULL)");
+    }
+
+    /**
+     * 接続人数確認用テーブルにユーザ情報を保存する
+     *
+     * @param $user
+     * @param $room
+     *
+     * @return PDOStatement
+     */
+    function joinRoomMember($user, $room)
+    {
+        $rows = $this->pdo->query("SELECT * FROM $room WHERE joinUser = '$user'");
+
+        foreach($rows as $row)
+        {
+            if(isset($row["joinUser"]))
+            {
+                return;
+            }
+        }
+        return $this->pdo->query("INSERT INTO $room VALUES ('$user')");
+    }
+
+    function removeRoomMember($user, $room)
+    {
+        return $this->pdo->query("DELETE FROM $room WHERE joinUser = '$user'");
+    }
+
+    function getRoomMember($room)
+    {
+        return $this->pdo->query("SELECT * FROM $room");
     }
 }
 ?>

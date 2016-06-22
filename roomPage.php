@@ -17,6 +17,7 @@
     }
 
     $roomInfo = $func->getRoomInfo($_SESSION["roomName"]);
+    $joinResult = $func->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
 
     if(isset($_POST["update"]))
     {
@@ -30,7 +31,6 @@
         $_POST = array();
     }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
@@ -46,7 +46,19 @@
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8H1PLQFo84FkLoVfVkpf-2i9FQc-YDRs"></script>
+        <script src="js/realtimeFlush.js"></script>
         <script src="js/watch-position.js"></script>
+
+        <script type="text/javascript">
+            $(window).unload(function() {
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "leaveRoom.php",
+                    success: function(){}
+                });
+            });
+        </script>
     </head>
 
     <body>
@@ -119,10 +131,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">接続中のユーザ</div>
                         <ul class="list-group">
-                            <li class="list-group-item">User1</li>
-                            <li class="list-group-item">User2</li>
-                            <li class="list-group-item">User3</li>
-                            <li class="list-group-item">User4</li>
+                            <div id="after" style="display:none">
+                                <div id="after_detail"></div>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -131,11 +142,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">マップエリア</div>
                         <div class="panel-body">
-                            <div class="google-maps">
-                                <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3243.0483586847345!2d139.3381578263927!3d35.62653432616566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60191da6d0a3a261%3A0x337318568a7aaa3b!2z5p2x5Lqs5bel56eR5aSn5a2mIOWFq-eOi-WtkOOCreODo-ODs-ODkeOCuQ!5e0!3m2!1sja!2sjp!4v1466492244153" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>-->
-                                <div class="map-wrapper">
-                                    <div id="map-canvas"></div>
-                                </div>
+                            <div class="map-wrapper">
+                                <div id="map-canvas"></div>
                             </div>
                         </div>
                     </div>
@@ -174,10 +182,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">接続中のユーザ</div>
                         <ul class="list-group">
-                            <li class="list-group-item">User1</li>
-                            <li class="list-group-item">User2</li>
-                            <li class="list-group-item">User3</li>
-                            <li class="list-group-item">User4</li>
+                            <div id="after" style="display:none">
+                                <div id="after_detail"></div>
+                            </div>
                         </ul>
                     </div>
                 </div>
