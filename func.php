@@ -203,6 +203,7 @@ class func
      */
     function removeRoomMember($user, $room)
     {
+        if($room === null) return -1;
         return $this->pdo->query("DELETE FROM $room WHERE joinUser = '$user'");
     }
 

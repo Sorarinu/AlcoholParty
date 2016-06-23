@@ -52,11 +52,14 @@ else if (isset($_POST["join"]))
 {
     if($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "")
     {
-        $result = $func->join($_POST["roomName"], $_POST["roomPassword"]);
+        $roomName = filter_input(INPUT_POST, "roomName", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $roomPassword = filter_input(INPUT_POST, "roomPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $result = $func->join($roomName, $roomPassword);
 
         if($result !== null)
         {
-            $_SESSION += array("roomName" => $_POST["roomName"]);
+            $_SESSION += array("roomName" => $roomName);
             $_POST = array();
             header("Location: roomPage.php");
             exit;
@@ -98,10 +101,23 @@ else if (isset($_POST["signUp"]))
     {
         if ($_POST["userPassword"] === $_POST["confUserPassword"])
         {
-            if($func->checkUserId(htmlspecialchars($_POST["userid"])) !== -1)
+            $userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $userPassword = filter_input(INPUT_POST, "userPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $userNickName = filter_input(INPUT_POST, "userNickName", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $userEmail = filter_input(INPUT_POST, "userEmail", FILTER_VALIDATE_EMAIL);
+
+            if($func->checkUserId($userId) !== -1)
             {
-                $result = $func->signUp(htmlspecialchars($_POST["userId"]), htmlspecialchars($_POST["userPassword"]), htmlspecialchars($_POST["userNickName"]), htmlspecialchars($_POST["userEmail"]));
-                $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
+                if($userEmail !== false)
+                {
+                    $result = $func->signUp($userId, $userPassword, $userNickName, $userEmail);
+                    $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
+                }
+                else
+                {
+                    $signUpMsg = "メールアドレスの形式が正しくありません";
+                    $_POST = array();
+                }
             }
             else
             {

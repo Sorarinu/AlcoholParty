@@ -16,5 +16,5 @@
         session_start();
     }
 
-    $func->removeRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
+    $func->removeRoomMember($_SESSION["nickName"], isset($_SESSION["roomName"]) ? $_SESSION["roomName"] : null);
 ?>
