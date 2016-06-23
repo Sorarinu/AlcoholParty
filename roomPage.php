@@ -5,16 +5,15 @@
  * Date: 2016/06/20
  * Time: 23:56
  */
+    if(!isset($_SESSION))
+    {
+        session_start();
+    }
 
     require_once 'chromelog.php';
     require_once 'func.php';
 
     $func = new func();
-
-    if(!isset($_SESSION))
-    {
-        session_start();
-    }
 
     $roomInfo = $func->getRoomInfo($_SESSION["roomName"]);
     $joinResult = $func->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);

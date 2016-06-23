@@ -5,14 +5,13 @@
  * Date: 2016/06/18
  * Time: 23:50
  */
-
-    require_once 'chromelog.php';
-    require_once 'leaveRoom.php';
-
     if(!isset($_SESSION))
     {
         session_start();
     }
+
+    require_once 'chromelog.php';
+    require_once 'leaveRoom.php';
 
     if(!isset($_SESSION["id"]))
     {

@@ -5,15 +5,15 @@
      * Date: 2016/06/22
      * Time: 12:00
      */
-    require_once 'func.php';
-    require_once 'chromelog.php';
-
-    $func = new func();
-
     if(!isset($_SESSION))
     {
         session_start();
     }
+
+    require_once 'func.php';
+    require_once 'chromelog.php';
+
+    $func = new func();
 
     if (isset($_POST))
     {

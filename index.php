@@ -5,15 +5,15 @@
  * Date: 2016/06/17
  * Time: 15:00
  */
-require_once 'chromelog.php';
-require_once 'func.php';
-
-$func = new func();
-
 if (!isset($_SESSION))
 {
     session_start();
 }
+
+require_once 'chromelog.php';
+require_once 'func.php';
+
+$func = new func();
 
 if (isset($_POST["create"]))
 {
