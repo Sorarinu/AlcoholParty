@@ -187,7 +187,8 @@ class func
         {
             if(isset($row["joinUser"]))
             {
-                return;
+                ChromePhp::log("return");
+                return -1;
             }
         }
         return $this->pdo->query("INSERT INTO $room VALUES ('$user')");

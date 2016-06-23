@@ -20,6 +20,8 @@
 
     if(isset($_POST["update"]))
     {
+        require_once 'leaveRoom.php';
+
         $result = $func->updateRoomInfo(
             $roomInfo["room"],
             $_POST["place"] !== "" ? $_POST["place"] : $roomInfo["place"],
