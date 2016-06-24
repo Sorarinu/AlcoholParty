@@ -10,14 +10,14 @@
         session_start();
     }
 
-    require_once 'func.php';
+    require_once 'db.php';
     require_once 'chromelog.php';
 
-    $func = new func();
+    $db = new db();
 
     if (isset($_POST))
     {
-        $rows = $func->getRoomMember($_SESSION["roomName"]);
+        $rows = $db->getRoomMember($_SESSION["roomName"]);
         $html = "";
 
         foreach ($rows as $row)

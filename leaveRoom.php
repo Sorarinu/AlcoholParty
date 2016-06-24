@@ -11,9 +11,9 @@
     }
 
     require_once 'chromelog.php';
-    require_once 'func.php';
+    require_once 'db.php';
 
-    $func = new func();
+    $db = new db();
 
-    $func->removeRoomMember($_SESSION["nickName"], isset($_SESSION["roomName"]) ? $_SESSION["roomName"] : null);
+    $db->removeRoomMember($_SESSION["nickName"], isset($_SESSION["roomName"]) ? $_SESSION["roomName"] : null);
 ?>

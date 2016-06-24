@@ -8,7 +8,7 @@
 
 require_once 'chromelog.php';
 
-class func
+class db
 {
     /**
      * func constructor.

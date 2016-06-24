@@ -11,11 +11,11 @@
     }
 
     require_once 'chromelog.php';
-    require_once 'func.php';
+    require_once 'db.php';
 
-    $func = new func();
+    $db = new db();
 
-    $func->deleteRoom($_SESSION["roomName"], $_SESSION["id"]);
+    $db->deleteRoom($_SESSION["roomName"], $_SESSION["id"]);
 
     $msg = "ルームを削除しました";
 

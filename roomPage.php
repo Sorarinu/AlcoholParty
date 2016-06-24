@@ -11,9 +11,9 @@
     }
 
     require_once 'chromelog.php';
-    require_once 'func.php';
+    require_once 'db.php';
 
-    $func = new func();
+    $func = new db();
 
     $roomInfo = $func->getRoomInfo($_SESSION["roomName"]);
     $result = $func->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);

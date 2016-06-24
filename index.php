@@ -12,9 +12,9 @@
 
     require_once 'mail.php';
     require_once 'chromelog.php';
-    require_once 'func.php';
+    require_once 'db.php';
 
-    $func = new func();
+    $db = new db();
 
     if (isset($_POST["create"]))
     {
@@ -22,7 +22,7 @@
         {
             if($_POST["roomPassword"] === $_POST["confRoomPassword"])
             {
-                $result = $func->createRoom($_SESSION["id"],$_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_SESSION["email"]);
+                $result = $db->createRoom($_SESSION["id"],$_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_SESSION["email"]);
 
                 if($result === -1)
                 {
@@ -31,7 +31,7 @@
                 }
                 else
                 {
-                    $func->createRoomTable($_POST["roomName"]);
+                    $db->createRoomTable($_POST["roomName"]);
 
                     $createMsg = "Success：新規ルームの作成が完了しました．";
                     $_SESSION += array("roomName" => $_POST["roomName"]);
@@ -56,7 +56,7 @@
             $roomName = filter_input(INPUT_POST, "roomName", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $roomPassword = filter_input(INPUT_POST, "roomPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            $result = $func->join($roomName, $roomPassword);
+            $result = $db->join($roomName, $roomPassword);
 
             if($result !== null)
             {
@@ -78,7 +78,7 @@
         $userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $userPassword = filter_input(INPUT_POST, "userPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $user = $func->login($userId, $userPassword);
+        $user = $db->login($userId, $userPassword);
 
         if ($user !== null)
         {
@@ -107,11 +107,11 @@
                 $userNickName = filter_input(INPUT_POST, "userNickName", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 $userEmail = filter_input(INPUT_POST, "userEmail", FILTER_VALIDATE_EMAIL);
 
-                if($func->checkUserId($userId) !== -1)
+                if($db->checkUserId($userId) !== -1)
                 {
                     if($userEmail !== false)
                     {
-                        $result = $func->signUp($userId, $userPassword, $userNickName, $userEmail);
+                        $result = $db->signUp($userId, $userPassword, $userNickName, $userEmail);
                         $mail = new snedMail();
                         $mail->sendNewAccount($userEmail, $userId);
                         $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
@@ -291,7 +291,7 @@
                         <div class="panel panel-info">
                             <div class="panel-heading">ルーム一覧</div>
                                 <?php
-                                    $rooms = $func->getRoom();
+                                    $rooms = $db->getRoom();
 
                                     foreach($rooms as $room)
                                     {
