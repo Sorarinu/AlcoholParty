@@ -14,6 +14,7 @@
      * See the License for the specific language governing permissions and
      * limitations under the License.
      */
+
     /**
      * Server Side Chrome PHP debugger class
      *
@@ -106,6 +107,7 @@
          * @var array
          */
         protected $_processed = array();
+
         /**
          * constructor
          */
@@ -115,6 +117,7 @@
             $this->_timestamp = $this->_php_version >= 5.1 ? $_SERVER['REQUEST_TIME'] : time();
             $this->_json['request_uri'] = $_SERVER['REQUEST_URI'];
         }
+
         /**
          * gets instance of this class
          *
@@ -125,41 +128,52 @@
             if (self::$_instance === null) {
                 self::$_instance = new self();
             }
+
             return self::$_instance;
         }
+
         /**
          * logs a variable to the console
          *
          * @param mixed $data,... unlimited OPTIONAL number of additional logs [...]
+         *
          * @return void
          */
         public static function log()
         {
             $args = func_get_args();
+
             return self::_log('', $args);
         }
+
         /**
          * logs a warning to the console
          *
          * @param mixed $data,... unlimited OPTIONAL number of additional logs [...]
+         *
          * @return void
          */
         public static function warn()
         {
             $args = func_get_args();
+
             return self::_log(self::WARN, $args);
         }
+
         /**
          * logs an error to the console
          *
          * @param mixed $data,... unlimited OPTIONAL number of additional logs [...]
+         *
          * @return void
          */
         public static function error()
         {
             $args = func_get_args();
+
             return self::_log(self::ERROR, $args);
         }
+
         /**
          * sends a group log
          *
@@ -168,19 +182,24 @@
         public static function group()
         {
             $args = func_get_args();
+
             return self::_log(self::GROUP, $args);
         }
+
         /**
          * sends an info log
          *
          * @param mixed $data,... unlimited OPTIONAL number of additional logs [...]
+         *
          * @return void
          */
         public static function info()
         {
             $args = func_get_args();
+
             return self::_log(self::INFO, $args);
         }
+
         /**
          * sends a collapsed group log
          *
@@ -189,8 +208,10 @@
         public static function groupCollapsed()
         {
             $args = func_get_args();
+
             return self::_log(self::GROUP_COLLAPSED, $args);
         }
+
         /**
          * ends a group log
          *
@@ -199,8 +220,10 @@
         public static function groupEnd()
         {
             $args = func_get_args();
+
             return self::_log(self::GROUP_END, $args);
         }
+
         /**
          * sends a table log
          *
@@ -209,12 +232,15 @@
         public static function table()
         {
             $args = func_get_args();
+
             return self::_log(self::TABLE, $args);
         }
+
         /**
          * internal logging call
          *
          * @param string $type
+         *
          * @return void
          */
         protected static function _log($type, array $args)
@@ -237,10 +263,12 @@
             }
             $logger->_addRow($logs, $backtrace_message, $type);
         }
+
         /**
          * converts an object to a better format for logging
          *
          * @param Object
+         *
          * @return array
          */
         protected function _convert($object)
@@ -277,7 +305,8 @@
                 }
                 try {
                     $value = $property->getValue($object);
-                } catch (ReflectionException $e) {
+                }
+                catch (ReflectionException $e) {
                     $value = 'only PHP 5.3 can access private/protected properties';
                 }
                 // same instance as parent object
@@ -286,12 +315,15 @@
                 }
                 $object_as_array[$type] = $this->_convert($value);
             }
+
             return $object_as_array;
         }
+
         /**
          * takes a reflection property and returns a nicely formatted key of the property name
          *
          * @param ReflectionProperty
+         *
          * @return string
          */
         protected function _getPropertyKey(ReflectionProperty $property)
@@ -307,6 +339,7 @@
                 return 'private' . $static . ' ' . $property->getName();
             }
         }
+
         /**
          * adds a value to the data array
          *
@@ -331,35 +364,42 @@
             $this->_json['rows'][] = $row;
             $this->_writeHeader($this->_json);
         }
+
         protected function _writeHeader($data)
         {
             header(self::HEADER_NAME . ': ' . $this->_encode($data));
         }
+
         /**
          * encodes the data to be sent along with the request
          *
          * @param array $data
+         *
          * @return string
          */
         protected function _encode($data)
         {
             return base64_encode(utf8_encode(json_encode($data)));
         }
+
         /**
          * adds a setting
          *
          * @param string key
          * @param mixed value
+         *
          * @return void
          */
         public function addSetting($key, $value)
         {
             $this->_settings[$key] = $value;
         }
+
         /**
          * add ability to set multiple settings in one call
          *
          * @param array $settings
+         *
          * @return void
          */
         public function addSettings(array $settings)
@@ -368,10 +408,12 @@
                 $this->addSetting($key, $value);
             }
         }
+
         /**
          * gets a setting
          *
          * @param string key
+         *
          * @return mixed
          */
         public function getSetting($key)
@@ -379,6 +421,7 @@
             if (!isset($this->_settings[$key])) {
                 return null;
             }
+
             return $this->_settings[$key];
         }
     }

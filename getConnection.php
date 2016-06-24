@@ -5,8 +5,7 @@
      * Date: 2016/06/22
      * Time: 12:00
      */
-    if(!isset($_SESSION))
-    {
+    if (!isset($_SESSION)) {
         session_start();
     }
 
@@ -15,13 +14,11 @@
 
     $db = new db();
 
-    if (isset($_POST))
-    {
+    if (isset($_POST)) {
         $rows = $db->getRoomMember($_SESSION["roomName"]);
         $html = "";
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $html .= "<li class=\"list-group-item\">" . $row["joinUser"] . "</li>";
         }
 

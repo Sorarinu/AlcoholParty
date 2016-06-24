@@ -5,8 +5,7 @@
      * Date: 2016/06/22
      * Time: 14:04
      */
-    if (!isset($_SESSION))
-    {
+    if (!isset($_SESSION)) {
         session_start();
     }
 

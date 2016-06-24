@@ -1,4 +1,5 @@
 <?php
+
     /**
      * Created by PhpStorm.
      * User: Sorarinu
@@ -30,4 +31,5 @@ EOM;
             mb_send_mail($to, $subject, $message, $headers);
         }
     }
+
 ?>
