@@ -160,7 +160,7 @@
          */
         function createRoomTable($room)
         {
-            return $this->pdo->query("CREATE TABLE $room (joinUser TEXT NOT NULL)");
+            return $this->pdo->query("CREATE TABLE $room (joinUser TEXT NOT NULL, latitude DOUBLE, 	longitude DOUBLE)");
         }
 
         /**
