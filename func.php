@@ -191,7 +191,8 @@ class func
                 return -1;
             }
         }
-        return $this->pdo->query("INSERT INTO $room VALUES ('$user')");
+        $this->pdo->query("INSERT INTO $room VALUES ('$user')");
+        return $this->pdo->errorInfo();
     }
 
     /**

@@ -16,12 +16,10 @@
     $func = new func();
 
     $roomInfo = $func->getRoomInfo($_SESSION["roomName"]);
-    $joinResult = $func->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
+    $result = $func->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
 
     if(isset($_POST["update"]))
     {
-        require_once 'leaveRoom.php';
-
         $result = $func->updateRoomInfo(
             $roomInfo["room"],
             $_POST["place"] !== "" ? $_POST["place"] : $roomInfo["place"],
@@ -52,7 +50,7 @@
         <script type="text/javascript" src="js/watch-position.js"></script>
 
         <script type="text/javascript">
-            $(window).unload(function() {
+            $(window).on("beforeunload", function() {
                 $.ajax({
                     type: "POST",
                     async: false,
