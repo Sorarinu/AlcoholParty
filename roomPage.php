@@ -12,20 +12,20 @@
     require_once 'chromelog.php';
     require_once 'db.php';
 
-    $func = new db();
+    $db = new db();
 
-    $roomInfo = $func->getRoomInfo($_SESSION["roomName"]);
-    $result = $func->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
+    $roomInfo = $db->getRoomInfo($_SESSION["roomName"]);
+    $result = $db->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
 
     if (isset($_POST["update"])) {
-        $result = $func->updateRoomInfo(
+        $result = $db->updateRoomInfo(
             $roomInfo["room"],
             $_POST["place"] !== "" ? $_POST["place"] : $roomInfo["place"],
             $_POST["datetime"] !== "" ? $_POST["datetime"] : $roomInfo["date"],
             $_POST["budget"] !== "" ? $_POST["budget"] : $roomInfo["budget"],
             $_POST["note"] !== "" ? $_POST["note"] : $roomInfo["note"]
         );
-        $roomInfo = $func->getRoomInfo($_SESSION["roomName"]);
+        $roomInfo = $db->getRoomInfo($_SESSION["roomName"]);
         $_POST = array();
     }
 ?>

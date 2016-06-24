@@ -182,7 +182,7 @@
                     return -1;
                 }
             }
-            $this->pdo->query("INSERT INTO $room VALUES ('$user')");
+            $this->pdo->query("INSERT INTO $room (joinUser) VALUES ('$user')");
 
             return $this->pdo->errorInfo();
         }
