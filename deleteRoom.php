@@ -17,10 +17,10 @@
     $mail = new snedMail();
 
     $db->deleteRoom($_SESSION["roomName"], $_SESSION["id"]);
+    $mail->sendDeleteRoom($_SESSION["mail"], $_SESSION["nickName"], $_SESSION["roomName"]);
+
     unset($_SESSION["roomName"]);
     $msg = "ルームを削除しました";
-
-    $mail->sendDeleteRoom($_SESSION["mail"], $_SESSION["nickName"], $_SESSION["roomName"]);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
