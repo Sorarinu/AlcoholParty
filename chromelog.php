@@ -125,7 +125,8 @@
          */
         public static function getInstance()
         {
-            if (self::$_instance === null) {
+            if (self::$_instance === null)
+            {
                 self::$_instance = new self();
             }
 
@@ -246,19 +247,22 @@
         protected static function _log($type, array $args)
         {
             // nothing passed in, don't do anything
-            if (count($args) == 0 && $type != self::GROUP_END) {
+            if (count($args) == 0 && $type != self::GROUP_END)
+            {
                 return;
             }
             $logger = self::getInstance();
             $logger->_processed = array();
             $logs = array();
-            foreach ($args as $arg) {
+            foreach ($args as $arg)
+            {
                 $logs[] = $logger->_convert($arg);
             }
             $backtrace = debug_backtrace(false);
             $level = $logger->getSetting(self::BACKTRACE_LEVEL);
             $backtrace_message = 'unknown';
-            if (isset($backtrace[$level]['file']) && isset($backtrace[$level]['line'])) {
+            if (isset($backtrace[$level]['file']) && isset($backtrace[$level]['line']))
+            {
                 $backtrace_message = $backtrace[$level]['file'] . ' : ' . $backtrace[$level]['line'];
             }
             $logger->_addRow($logs, $backtrace_message, $type);
@@ -274,7 +278,8 @@
         protected function _convert($object)
         {
             // if this isn't an object then just return it
-            if (!is_object($object)) {
+            if (!is_object($object))
+            {
                 return $object;
             }
             //Mark this object as processed so we don't convert it twice and it
@@ -285,32 +290,39 @@
             $object_as_array['___class_name'] = get_class($object);
             // loop through object vars
             $object_vars = get_object_vars($object);
-            foreach ($object_vars as $key => $value) {
+            foreach ($object_vars as $key => $value)
+            {
                 // same instance as parent object
-                if ($value === $object || in_array($value, $this->_processed, true)) {
+                if ($value === $object || in_array($value, $this->_processed, true))
+                {
                     $value = 'recursion - parent object [' . get_class($value) . ']';
                 }
                 $object_as_array[$key] = $this->_convert($value);
             }
             $reflection = new ReflectionClass($object);
             // loop through the properties and add those
-            foreach ($reflection->getProperties() as $property) {
+            foreach ($reflection->getProperties() as $property)
+            {
                 // if one of these properties was already added above then ignore it
-                if (array_key_exists($property->getName(), $object_vars)) {
+                if (array_key_exists($property->getName(), $object_vars))
+                {
                     continue;
                 }
                 $type = $this->_getPropertyKey($property);
-                if ($this->_php_version >= 5.3) {
+                if ($this->_php_version >= 5.3)
+                {
                     $property->setAccessible(true);
                 }
-                try {
+                try
+                {
                     $value = $property->getValue($object);
-                }
-                catch (ReflectionException $e) {
+                } catch (ReflectionException $e)
+                {
                     $value = 'only PHP 5.3 can access private/protected properties';
                 }
                 // same instance as parent object
-                if ($value === $object || in_array($value, $this->_processed, true)) {
+                if ($value === $object || in_array($value, $this->_processed, true))
+                {
                     $value = 'recursion - parent object [' . get_class($value) . ']';
                 }
                 $object_as_array[$type] = $this->_convert($value);
@@ -329,13 +341,16 @@
         protected function _getPropertyKey(ReflectionProperty $property)
         {
             $static = $property->isStatic() ? ' static' : '';
-            if ($property->isPublic()) {
+            if ($property->isPublic())
+            {
                 return 'public' . $static . ' ' . $property->getName();
             }
-            if ($property->isProtected()) {
+            if ($property->isProtected())
+            {
                 return 'protected' . $static . ' ' . $property->getName();
             }
-            if ($property->isPrivate()) {
+            if ($property->isPrivate())
+            {
                 return 'private' . $static . ' ' . $property->getName();
             }
         }
@@ -349,15 +364,18 @@
         protected function _addRow(array $logs, $backtrace, $type)
         {
             // if this is logged on the same line for example in a loop, set it to null to save space
-            if (in_array($backtrace, $this->_backtraces)) {
+            if (in_array($backtrace, $this->_backtraces))
+            {
                 $backtrace = null;
             }
             // for group, groupEnd, and groupCollapsed
             // take out the backtrace since it is not useful
-            if ($type == self::GROUP || $type == self::GROUP_END || $type == self::GROUP_COLLAPSED) {
+            if ($type == self::GROUP || $type == self::GROUP_END || $type == self::GROUP_COLLAPSED)
+            {
                 $backtrace = null;
             }
-            if ($backtrace !== null) {
+            if ($backtrace !== null)
+            {
                 $this->_backtraces[] = $backtrace;
             }
             $row = array($logs, $backtrace, $type);
@@ -404,7 +422,8 @@
          */
         public function addSettings(array $settings)
         {
-            foreach ($settings as $key => $value) {
+            foreach ($settings as $key => $value)
+            {
                 $this->addSetting($key, $value);
             }
         }
@@ -418,7 +437,8 @@
          */
         public function getSetting($key)
         {
-            if (!isset($this->_settings[$key])) {
+            if (!isset($this->_settings[$key]))
+            {
                 return null;
             }
 

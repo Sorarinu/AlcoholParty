@@ -5,17 +5,19 @@
      * Date: 2016/06/18
      * Time: 23:50
      */
-    if (!isset($_SESSION)) {
+    if (!isset($_SESSION))
+    {
         session_start();
     }
 
     require_once 'chromelog.php';
     require_once 'leaveRoom.php';
 
-    if (!isset($_SESSION["id"])) {
+    if (!isset($_SESSION["id"]))
+    {
         $msg = "セッションがタイムアウトしました";
-    }
-    else {
+    } else
+    {
         $msg = "ログアウトしました";
     }
 

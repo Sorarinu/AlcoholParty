@@ -16,12 +16,13 @@
          */
         function __construct()
         {
-            try {
+            try
+            {
                 $this->pdo = new PDO('mysql:host=nxtg-t.net;dbname=projectP;charset=utf8;', 'projectP', 'projectP', array(PDO::ATTR_EMULATE_PREPARES => false));
                 $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            }
-            catch (PDOException $ex) {
+            } catch (PDOException $ex)
+            {
                 exit('Connection Error...' . $ex->getMessage());
             }
         }
@@ -37,8 +38,10 @@
         {
             $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId'");
 
-            foreach ($rows as $row) {
-                if (isset($row["id"])) {
+            foreach ($rows as $row)
+            {
+                if (isset($row["id"]))
+                {
                     return -1;
                 }
             }
@@ -65,8 +68,10 @@
         {
             $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId' AND password = '$password'");
 
-            foreach ($rows as $row) {
-                if (isset($row['id'])) {
+            foreach ($rows as $row)
+            {
+                if (isset($row['id']))
+                {
                     return $row;
                 }
 
@@ -89,8 +94,10 @@
         {
             $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room'");
 
-            foreach ($rows as $row) {
-                if (isset($row["room"])) {
+            foreach ($rows as $row)
+            {
+                if (isset($row["room"]))
+                {
                     return -1;
                 }
             }
@@ -109,7 +116,8 @@
         {
             $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room'");
 
-            foreach ($rows as $row) {
+            foreach ($rows as $row)
+            {
                 return $row;
             }
         }
@@ -126,8 +134,10 @@
         {
             $rows = $this->pdo->query("SELECT * FROM room WHERE room = '$room' AND password = '$password'");
 
-            foreach ($rows as $row) {
-                if (isset($row["room"])) {
+            foreach ($rows as $row)
+            {
+                if (isset($row["room"]))
+                {
                     return $row;
                 }
 
@@ -175,10 +185,10 @@
         {
             $rows = $this->pdo->query("SELECT * FROM $room WHERE joinUser = '$user'");
 
-            foreach ($rows as $row) {
-                if (isset($row["joinUser"])) {
-                    ChromePhp::log("return");
-
+            foreach ($rows as $row)
+            {
+                if (isset($row["joinUser"]))
+                {
                     return -1;
                 }
             }
@@ -197,7 +207,8 @@
          */
         function removeRoomMember($user, $room)
         {
-            if ($room === null) return -1;
+            if ($room === null)
+                return -1;
 
             return $this->pdo->query("DELETE FROM $room WHERE joinUser = '$user'");
         }

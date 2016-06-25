@@ -5,7 +5,8 @@
      * Date: 2016/06/17
      * Time: 15:00
      */
-    if (!isset($_SESSION)) {
+    if (!isset($_SESSION))
+    {
         session_start();
     }
 
@@ -14,60 +15,69 @@
     require_once 'db.php';
 
     $db = new db();
+    $mail = new snedMail();
 
-    if (isset($_POST["create"])) {
-        if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "") {
-            if ($_POST["roomPassword"] === $_POST["confRoomPassword"]) {
+    if (isset($_POST["create"]))
+    {
+        if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "")
+        {
+            if ($_POST["roomPassword"] === $_POST["confRoomPassword"])
+            {
                 $result = $db->createRoom($_SESSION["id"], $_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_SESSION["email"]);
 
-                if ($result === -1) {
+                if ($result === -1)
+                {
                     $createMsg = "Error：入力されたルーム名は既に使用されています";
                     $_POST = array();
-                }
-                else {
+                } else
+                {
                     $db->createRoomTable($_POST["roomName"]);
 
                     $createMsg = "Success：新規ルームの作成が完了しました．";
                     $_SESSION += array("roomName" => $_POST["roomName"]);
+                    $mail->sendNewRoom($_SESSION["email"], $_SESSION["nickName"], $_SESSION["roomName"]);
                 }
-            }
-            else {
+            } else
+            {
                 $createMsg = "Error：パスワードが一致しません";
                 $_POST = array();
             }
-        }
-        else {
+        } else
+        {
             $createMsg = "Error：必要事項が入力されていません";
             $_POST = array();
         }
-    }
-    else if (isset($_POST["join"])) {
-        if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "") {
+    } else if (isset($_POST["join"]))
+    {
+        if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "")
+        {
             $roomName = filter_input(INPUT_POST, "roomName", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $roomPassword = filter_input(INPUT_POST, "roomPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $result = $db->join($roomName, $roomPassword);
 
-            if ($result !== null) {
+            if ($result !== null)
+            {
                 $_SESSION += array("roomName" => $roomName);
                 $_POST = array();
                 header("Location: roomPage.php");
                 exit;
-            }
-            else {
+            } else
+            {
                 $joinMsg = "Error：該当するルームが存在しません";
                 unset($_SESSION["roomName"]);
                 $_POST = array();
             }
         }
-    }
-    else if (isset($_POST["signIn"])) {
+    } else if (isset($_POST["signIn"]))
+    {
         $userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $userPassword = filter_input(INPUT_POST, "userPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $user = $db->login($userId, $userPassword);
 
-        if ($user !== null) {
+        if ($user !== null)
+        {
             //セッション保存
             session_regenerate_id(true);
             $_SESSION = array(
@@ -75,49 +85,52 @@
                 "nickName" => $user["nickname"],
                 "email" => $user["email"]
             );
-        }
-        else {
+        } else
+        {
             $signInMsg = "Error：ログインに失敗しました";
             $_POST = array();
         }
-    }
-    else if (isset($_POST["signUp"])) {
-        if ($_POST["userId"] !== "" && $_POST["userPassword"] !== "" && $_POST["confUserPassword"] !== "" && $_POST["userNickName"] !== "" && $_POST["userEmail"] !== "") {
-            if ($_POST["userPassword"] === $_POST["confUserPassword"]) {
+    } else if (isset($_POST["signUp"]))
+    {
+        if ($_POST["userId"] !== "" && $_POST["userPassword"] !== "" && $_POST["confUserPassword"] !== "" && $_POST["userNickName"] !== "" && $_POST["userEmail"] !== "")
+        {
+            if ($_POST["userPassword"] === $_POST["confUserPassword"])
+            {
                 $userId = filter_input(INPUT_POST, "userId", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 $userPassword = filter_input(INPUT_POST, "userPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 $userNickName = filter_input(INPUT_POST, "userNickName", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                 $userEmail = filter_input(INPUT_POST, "userEmail", FILTER_VALIDATE_EMAIL);
 
-                if ($db->checkUserId($userId) !== -1) {
-                    if ($userEmail !== false) {
+                if ($db->checkUserId($userId) !== -1)
+                {
+                    if ($userEmail !== false)
+                    {
                         $result = $db->signUp($userId, $userPassword, $userNickName, $userEmail);
-                        $mail = new snedMail();
                         $mail->sendNewAccount($userEmail, $userId);
                         $signUpMsg = "Success：ユーザ登録が完了しました！登録されたメールアドレスに確認メールを送信したから見てね！！";
-                    }
-                    else {
+                    } else
+                    {
                         $signUpMsg = "メールアドレスの形式が正しくありません";
                         $_POST = array();
                     }
-                }
-                else {
+                } else
+                {
                     $signUpMsg = "Error：入力されたIDは使用できません";
                     $_POST = array();
                 }
-            }
-            else {
+            } else
+            {
                 $signUpMsg = "Error：パスワードが一致しません";
                 $_POST = array();
             }
-        }
-        else {
+        } else
+        {
             $signUpMsg = "Error：必要事項が入力されていません";
             $_POST = array();
         }
 
-    }
-    else {
+    } else
+    {
         ChromePhp::log("Error..");
     }
 ?>

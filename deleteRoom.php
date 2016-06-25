@@ -11,13 +11,16 @@
 
     require_once 'chromelog.php';
     require_once 'db.php';
+    require_once 'mail.php';
 
     $db = new db();
+    $mail = new snedMail();
 
     $db->deleteRoom($_SESSION["roomName"], $_SESSION["id"]);
-
+    unset($_SESSION["roomName"]);
     $msg = "ルームを削除しました";
 
+    $mail->sendDeleteRoom($_SESSION["mail"], $_SESSION["nickName"], $_SESSION["roomName"]);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

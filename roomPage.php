@@ -5,7 +5,8 @@
      * Date: 2016/06/20
      * Time: 23:56
      */
-    if (!isset($_SESSION)) {
+    if (!isset($_SESSION))
+    {
         session_start();
     }
 
@@ -17,7 +18,8 @@
     $roomInfo = $db->getRoomInfo($_SESSION["roomName"]);
     $result = $db->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
 
-    if (isset($_POST["update"])) {
+    if (isset($_POST["update"]))
+    {
         $result = $db->updateRoomInfo(
             $roomInfo["room"],
             $_POST["place"] !== "" ? $_POST["place"] : $roomInfo["place"],
