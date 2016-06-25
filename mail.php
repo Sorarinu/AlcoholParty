@@ -38,8 +38,6 @@ EOM;
 
         function sendNewRoom($to, $user, $room)
         {
-
-
             $subject = "【no-reply】新規ルームを開設しました";
             $headers = "From: alcoholparty@nxtg-t.net" . "\r\n";
             $message = <<< EOM

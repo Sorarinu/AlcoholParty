@@ -5,7 +5,13 @@ var syncerWatchPosition = {
     marker: null
 };
 
+function isSuccess(req)
+{
+    return (req.readyState == 4 && req.status == 200) ? true : false;
+}
+
 function successFunc(position) {
+    var req = new XMLHttpRequest();
     var nowTime = ~~( new Date() / 1000 );	// UNIX Timestamp
 
     if ((syncerWatchPosition.lastTime + 1) > nowTime) {
@@ -16,21 +22,37 @@ function successFunc(position) {
 
     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-    if (syncerWatchPosition.map == null) {
-        syncerWatchPosition.map = new google.maps.Map(document.getElementById('map-canvas'), {
-            zoom: 15,
-            center: latlng
-        });
+    req.onreadystatechange = function () {
+        if(isSuccess(req)) {
+            console.log(req.responseText);
+            var users = JSON.parse(req.responseText);
 
-        syncerWatchPosition.marker = new google.maps.Marker({
-            map: syncerWatchPosition.map,
-            position: latlng
-        });
-    }
-    else {
-        syncerWatchPosition.map.setCenter(latlng);
-        syncerWatchPosition.marker.setPosition(latlng);
-    }
+            if (syncerWatchPosition.map == null) {
+                syncerWatchPosition.map = new google.maps.Map(document.getElementById('map-canvas'), {
+                    zoom: 15,
+                    center: latlng
+                });
+
+                for(var i = 0; i < users.length; i++)
+                {
+                    console.log(users[i]["user"]);
+                }
+
+                syncerWatchPosition.marker = new google.maps.Marker({
+                    map: syncerWatchPosition.map,
+                    position: latlng
+                });
+            }
+            else {
+                syncerWatchPosition.map.setCenter(latlng);
+                syncerWatchPosition.marker.setPosition(latlng);
+            }
+        }
+    };
+
+    req.open('POST', '/AlcoholParty/jsMysql.php', true);
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.send('latitude=' + position.coords.latitude + '&longitude=' + position.coords.longitude);
 }
 
 function errorFunc(error) {
@@ -46,7 +68,7 @@ function errorFunc(error) {
 
 var optionObj = {
     "enableHighAccuracy": false,
-    "timeout": 1000000,
+    "timeout": 10000000,
     "maximumAge": 0
 };
 

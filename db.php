@@ -5,7 +5,6 @@
      * Date: 2016/06/17
      * Time: 17:08
      */
-
     require_once 'chromelog.php';
 
     class db
@@ -245,6 +244,21 @@
         {
             $this->pdo->query("DELETE FROM room WHERE room = '$room' AND id = '$id'");
             $this->pdo->query("DROP TABLE $room");
+        }
+
+        /**
+         * DB内の位置情報を更新する
+         *
+         * @param $room
+         * @param $nickName
+         * @param $latitude
+         * @param $longitude
+         *
+         * @return PDOStatement
+         */
+        function updatePosition($room, $nickName, $latitude, $longitude)
+        {
+            return $this->pdo->query("UPDATE $room SET latitude = $latitude, longitude = $longitude WHERE joinUser = '$nickName'");
         }
     }
 
