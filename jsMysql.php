@@ -19,6 +19,7 @@
         ChromePhp::log("latitude=" . $_POST["latitude"] . " " . $_POST["longitude"]);
         ChromePhp::log("jsMysql.php: " . $_SESSION["nickName"]);
         $db->updatePosition($_SESSION["roomName"], $_SESSION["nickName"], $_POST["latitude"], $_POST["longitude"]);
+        $users = array();
 
         foreach($db->getRoomMember($_SESSION["roomName"]) as $row)
         {
@@ -29,7 +30,7 @@
 
     function addList($user, $latitude, $longitude)
     {
-        return array("user" => $user, "latitude" => $latitude, "longitude" => $longitude);
+        return array("session" => $_SESSION["nickName"], "user" => $user, "latitude" => $latitude, "longitude" => $longitude);
     }
 ?>
 

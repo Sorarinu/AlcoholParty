@@ -11,10 +11,12 @@ function isSuccess(req)
 }
 
 function successFunc(position) {
+    ++syncerWatchPosition.count;
+    console.log("GetLocation Start: " + syncerWatchPosition.count);
     var req = new XMLHttpRequest();
-    var nowTime = ~~( new Date() / 2000 );	// UNIX Timestamp
+    var nowTime = ~~( new Date() / 1000 );	// UNIX Timestamp
 
-    if ((syncerWatchPosition.lastTime + 1) > nowTime) {
+    if ((syncerWatchPosition.lastTime + 3) > nowTime) {
         return false;
     }
 
@@ -32,10 +34,14 @@ function successFunc(position) {
                     zoom: 15,
                     center: latlng
                 });
+            }
+
+            syncerWatchPosition.marker = null;
 
                 for(var i = 0; i < users.length; i++)
                 {
                     console.log(users[i]["user"]);
+                    console.log("Session: " + users[i]["session"]);
 
                     latlng = new google.maps.LatLng({
                         lat: users[i]["latitude"],
@@ -47,11 +53,30 @@ function successFunc(position) {
                         map: syncerWatchPosition.map
                     });
                 }
-            }
+            /*}
             else {
-                syncerWatchPosition.map.setCenter(latlng);
-                syncerWatchPosition.marker.setPosition(latlng);
-            }
+                var users = JSON.parse(req.responseText);
+syncerWatchPosition.marker = null;
+                for(var j = 0; j < users.length; j++)
+                {
+                    console.log(users[j]["user"]);
+                    console.log("Session: " + users[j]["session"]);
+
+                    latlng = new google.maps.LatLng({
+                        lat: users[j]["latitude"],
+                        lng: users[j]["longitude"]
+                    });
+
+                    /*syncerWatchPosition.marker = new google.maps.Marker({
+                        position: latlng,
+                        map: syncerWatchPosition.map
+                    });*/
+                    /*if(users[j]["user"] == users[j]["session"]) {
+                        syncerWatchPosition.map.setCenter(latlng);
+                    }
+                    syncerWatchPosition.marker.setPosition(latlng);
+                }
+            }*/
         }
     };
 
