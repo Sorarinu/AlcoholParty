@@ -12,8 +12,7 @@ function isSuccess(req)
 
 function successFunc(position) {
     var req = new XMLHttpRequest();
-    var nowTime = ~~( new Date() / 1000 );	// UNIX Timestamp
-    var marker = [];
+    var nowTime = ~~( new Date() / 2000 );	// UNIX Timestamp
 
     if ((syncerWatchPosition.lastTime + 1) > nowTime) {
         return false;
@@ -43,16 +42,11 @@ function successFunc(position) {
                         lng: users[i]["longitude"]
                     });
 
-                    marker[i] = new google.maps.Marker({
+                    syncerWatchPosition.marker = new google.maps.Marker({
                         position: latlng,
                         map: syncerWatchPosition.map
                     });
                 }
-
-                /*syncerWatchPosition.marker = new google.maps.Marker({
-                    map: syncerWatchPosition.map,
-                    position: latlng
-                });*/
             }
             else {
                 syncerWatchPosition.map.setCenter(latlng);
