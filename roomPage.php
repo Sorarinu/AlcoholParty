@@ -36,7 +36,6 @@
 <head>
     <title>飲み会やろうぜ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">

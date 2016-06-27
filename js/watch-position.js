@@ -15,6 +15,8 @@ function successFunc(position) {
     console.log("GetLocation Start: " + syncerWatchPosition.count);
     var req = new XMLHttpRequest();
     var nowTime = ~~( new Date() / 1000 );	// UNIX Timestamp
+    var users;
+    var i = 0;
 
     if ((syncerWatchPosition.lastTime + 3) > nowTime) {
         return false;
@@ -27,18 +29,17 @@ function successFunc(position) {
     req.onreadystatechange = function () {
         if(isSuccess(req)) {
             console.log(req.responseText);
-            var users = JSON.parse(req.responseText);
+            users = JSON.parse(req.responseText);
 
             if (syncerWatchPosition.map == null) {
                 syncerWatchPosition.map = new google.maps.Map(document.getElementById('map-canvas'), {
                     zoom: 15,
                     center: latlng
                 });
-            }
 
-            syncerWatchPosition.marker = null;
+                syncerWatchPosition.marker = null;
 
-                for(var i = 0; i < users.length; i++)
+                for(i = 0; i < users.length; i++)
                 {
                     console.log(users[i]["user"]);
                     console.log("Session: " + users[i]["session"]);
@@ -53,30 +54,32 @@ function successFunc(position) {
                         map: syncerWatchPosition.map
                     });
                 }
-            /*}
+            }
             else {
                 var users = JSON.parse(req.responseText);
-syncerWatchPosition.marker = null;
-                for(var j = 0; j < users.length; j++)
-                {
-                    console.log(users[j]["user"]);
-                    console.log("Session: " + users[j]["session"]);
+
+                syncerWatchPosition.marker = null;
+
+                for(i = 0; i < users.length; i++) {
+                    console.log(users[i]["user"]);
+                    console.log("Session: " + users[i]["session"]);
 
                     latlng = new google.maps.LatLng({
-                        lat: users[j]["latitude"],
-                        lng: users[j]["longitude"]
+                        lat: users[i]["latitude"],
+                        lng: users[i]["longitude"]
                     });
 
-                    /*syncerWatchPosition.marker = new google.maps.Marker({
+                    syncerWatchPosition.marker = new google.maps.Marker({
                         position: latlng,
                         map: syncerWatchPosition.map
-                    });*/
-                    /*if(users[j]["user"] == users[j]["session"]) {
+                    });
+
+                    if (users[j]["user"] == users[j]["session"]) {
                         syncerWatchPosition.map.setCenter(latlng);
                     }
                     syncerWatchPosition.marker.setPosition(latlng);
                 }
-            }*/
+            }
         }
     };
 
