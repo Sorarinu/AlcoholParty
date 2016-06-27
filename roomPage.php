@@ -48,7 +48,8 @@
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8H1PLQFo84FkLoVfVkpf-2i9FQc-YDRs"></script>
     <script type="text/javascript" src="js/realtimeFlush.js"></script>
-    <script type="text/javascript" src="js/watch-position.js"></script>
+    <!--<script type="text/javascript" src="js/watch-position.js"></script>-->
+    <script type="text/javascript" src="js/getPosition.js"></script>
 
     <script type="text/javascript">
         $(window).on("beforeunload", function () {
