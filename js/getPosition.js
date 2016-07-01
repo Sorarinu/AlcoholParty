@@ -1,6 +1,7 @@
 /**
  * Created by Sorarinu on 2016/06/28.
  */
+
 jQuery(function ($) {
     if (!navigator.geolocation) {
         $("#map-canvas").text("お使いの端末はGPS非対応です．");
@@ -24,19 +25,19 @@ jQuery(function ($) {
     }
     lastTime = nowTime;
 
-    $("#map-canvas").text("Getting for GPS Location...");
-
     navigator.geolocation.watchPosition(function (position) {
         req.onreadystatechange = function () {
             if(isSuccess(req)){
                 var users = JSON.parse(req.responseText);
 
+                console.log(maps == null ? "null" : maps);
                 if(maps == null) {
                     maps = new google.maps.Map($("#map-canvas").get(0), {
                         center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         zoom: 15
                     });
+                    console.log("new create");
                 }
 
                 console.log(users.length);
@@ -58,6 +59,17 @@ jQuery(function ($) {
                     currentMarker.setMap(maps);
                     markerInfo.open(maps, currentMarker);
                 }
+                mapBounds = maps.getBounds().getSouthWest();
+                maps.setCenter(google.maps.LatLng(mapBounds.lat(), mapBounds.lng()));
+                /*maps.addListener('center_changed', function() {
+                    //console.log("Map Center Change!!");
+                    window.setTimeout(function () {
+                        maps.setCenter(maps.getCenter());
+                    }, 1000);
+                    //maps.setCenter(maps.getCenter());
+                });*/
+                //maps.setCenter(maps.getCenter());
+                //console.log("set center: " + maps.getCenter().toString());
             }
         };
 
@@ -68,6 +80,8 @@ jQuery(function ($) {
         $("#map-canvas").text("位置情報の取得が出来ませんでした．");
         return false;
     }, optionObj);
+
+
 });
 
 function isSuccess(req)

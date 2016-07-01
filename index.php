@@ -18,23 +18,33 @@
 
     if (isset($_POST["create"])) {
         if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "") {
-            if ($_POST["roomPassword"] === $_POST["confRoomPassword"]) {
-                $result = $db->createRoom($_SESSION["id"], $_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_SESSION["email"]);
+            if($_POST["roomName"] !== "room" && $_POST["roomName"] !== "users")
+            {
+                if ($_POST["roomPassword"] === $_POST["confRoomPassword"])
+                {
+                    $result = $db->createRoom($_SESSION["id"], $_SESSION["nickName"], $_POST["roomName"], $_POST["roomPassword"], $_SESSION["email"]);
 
-                if ($result === -1) {
-                    $createMsg = "Error：入力されたルーム名は既に使用されています";
+                    if ($result === -1)
+                    {
+                        $createMsg = "Error：入力されたルーム名は既に使用されています";
+                        $_POST = array();
+                    } else
+                    {
+                        $db->createRoomTable($_POST["roomName"]);
+
+                        $createMsg = "Success：新規ルームの作成が完了しました．";
+                        $_SESSION += array("roomName" => $_POST["roomName"]);
+                        $mail->sendNewRoom($_SESSION["email"], $_SESSION["nickName"], $_SESSION["roomName"]);
+                    }
+
+                } else
+                {
+                    $createMsg = "Error：パスワードが一致しません";
                     $_POST = array();
                 }
-                else {
-                    $db->createRoomTable($_POST["roomName"]);
-
-                    $createMsg = "Success：新規ルームの作成が完了しました．";
-                    $_SESSION += array("roomName" => $_POST["roomName"]);
-                    $mail->sendNewRoom($_SESSION["email"], $_SESSION["nickName"], $_SESSION["roomName"]);
-                }
             }
-            else {
-                $createMsg = "Error：パスワードが一致しません";
+            else{
+                $createMsg = "Error：指定されたルーム名は使用できません";
                 $_POST = array();
             }
         }
@@ -52,6 +62,7 @@
 
             if ($result !== null) {
                 $_SESSION += array("roomName" => $roomName);
+                $_SESSION += array("joinDate" => date());
                 $_POST = array();
                 header("Location: roomPage.php");
                 exit;
@@ -292,8 +303,13 @@
             </div>
 
             <div class="tab-pane" id="tab2">
-                ユーザ情報設定画面<br>
-                かみんぐすーーーーん
+                <!-- ユーザプロフィール表示画面 -->
+                <?php require_once 'userInfoPage.php'; ?>
+
+                <!-- 設定画面 -->
+                <div class="col-md-8">
+
+                </div>
             </div>
 
             <div class="tab-pane" id="tab3">
@@ -437,3 +453,4 @@
 ?>
 </body>
 </html>
+

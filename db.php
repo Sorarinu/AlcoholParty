@@ -27,55 +27,15 @@
         }
 
         /**
-         * 既に存在しているユーザか判定
+         * 接続人数確認用テーブルを作成する
          *
-         * @param $userId
-         *
-         * @return int
-         */
-        function checkUserId($userId)
-        {
-            $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId'");
-
-            foreach ($rows as $row)
-            {
-                if (isset($row["id"]))
-                {
-                    return -1;
-                }
-            }
-
-            return 0;
-        }
-
-        /**
-         * ユーザ情報をデータベースに保存する
-         *
-         * @param $userId
-         * @param $password
-         * @param $nickName
-         * @param $email
+         * @param $room
          *
          * @return PDOStatement
          */
-        function signUp($userId, $password, $nickName, $email)
+        function createRoomTable($room)
         {
-            return $this->pdo->query("INSERT INTO users (id, password, nickname, email) VALUES ('$userId', '$password', '$nickName', '$email')");
-        }
-
-        function login($userId, $password)
-        {
-            $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId' AND password = '$password'");
-
-            foreach ($rows as $row)
-            {
-                if (isset($row['id']))
-                {
-                    return $row;
-                }
-
-                return false;
-            }
+            return $this->pdo->query("CREATE TABLE $room (joinUser TEXT NOT NULL, latitude DOUBLE, 	longitude DOUBLE)");
         }
 
         /**
@@ -105,6 +65,40 @@
         }
 
         /**
+         * 既に存在しているユーザか判定
+         *
+         * @param $userId
+         *
+         * @return int
+         */
+        function checkUserId($userId)
+        {
+            $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId'");
+
+            foreach ($rows as $row)
+            {
+                if (isset($row["id"]))
+                {
+                    return -1;
+                }
+            }
+
+            return 0;
+        }
+
+        /**
+         * 指定のルームを削除する
+         *
+         * @param $room
+         * @param $id
+         */
+        function deleteRoom($room, $id)
+        {
+            $this->pdo->query("DELETE FROM room WHERE room = '$room' AND id = '$id'");
+            $this->pdo->query("DROP TABLE $room");
+        }
+
+        /**
          * ルーム情報を返す
          *
          * @param $room
@@ -119,6 +113,40 @@
             {
                 return $row;
             }
+        }
+
+        /**
+         * 接続中のユーザを取得
+         *
+         * @param $room
+         *
+         * @return PDOStatement
+         */
+        function getRoomMember($room)
+        {
+            return $this->pdo->query("SELECT * FROM $room");
+        }
+
+        /**
+         * ルーム一覧を取得する
+         *
+         * @return PDOStatement
+         */
+        function getRoom()
+        {
+            return $this->pdo->query("SELECT * FROM room");
+        }
+
+        /**
+         * ユーザ情報を取得する
+         *
+         * @param $user
+         *
+         * @return PDOStatement
+         */
+        function getUserData($userId)
+        {
+            return $this->pdo->query("SELECT * FROM users WHERE id='$userId'");
         }
 
         /**
@@ -142,34 +170,6 @@
 
                 return null;
             }
-        }
-
-        /**
-         * ルーム情報を更新する
-         *
-         * @param $room
-         * @param $place
-         * @param $date
-         * @param $budget
-         * @param $note
-         *
-         * @return PDOStatement
-         */
-        function updateRoomInfo($room, $place, $date, $budget, $note)
-        {
-            return $this->pdo->query("UPDATE room SET place = '$place', date = '$date', budget = '$budget', note = '$note' WHERE room = '$room'");
-        }
-
-        /**
-         * 接続人数確認用テーブルを作成する
-         *
-         * @param $room
-         *
-         * @return PDOStatement
-         */
-        function createRoomTable($room)
-        {
-            return $this->pdo->query("CREATE TABLE $room (joinUser TEXT NOT NULL, latitude DOUBLE, 	longitude DOUBLE)");
         }
 
         /**
@@ -197,6 +197,60 @@
         }
 
         /**
+         * ログイン処理
+         *
+         * @param $userId
+         * @param $password
+         *
+         * @return bool
+         */
+        function login($userId, $password)
+        {
+            $rows = $this->pdo->query("SELECT * FROM users WHERE id = '$userId' AND password = '$password'");
+
+            foreach ($rows as $row)
+            {
+                if (isset($row['id']))
+                {
+                    return $row;
+                }
+
+                return false;
+            }
+        }
+
+        /**
+         * ルーム情報を更新する
+         *
+         * @param $room
+         * @param $place
+         * @param $date
+         * @param $budget
+         * @param $note
+         *
+         * @return PDOStatement
+         */
+        function updateRoomInfo($room, $place, $date, $budget, $note)
+        {
+            return $this->pdo->query("UPDATE room SET place = '$place', date = '$date', budget = '$budget', note = '$note' WHERE room = '$room'");
+        }
+
+        /**
+         * DB内の位置情報を更新する
+         *
+         * @param $room
+         * @param $nickName
+         * @param $latitude
+         * @param $longitude
+         *
+         * @return PDOStatement
+         */
+        function updatePosition($room, $nickName, $latitude, $longitude)
+        {
+            return $this->pdo->query("UPDATE $room SET latitude = $latitude, longitude = $longitude WHERE joinUser = '$nickName'");
+        }
+
+        /**
          * 接続中のユーザ情報を消す
          *
          * @param $user
@@ -213,52 +267,18 @@
         }
 
         /**
-         * 接続中のユーザを取得
+         * ユーザ情報をデータベースに保存する
          *
-         * @param $room
-         *
-         * @return PDOStatement
-         */
-        function getRoomMember($room)
-        {
-            return $this->pdo->query("SELECT * FROM $room");
-        }
-
-        /**
-         * ルーム一覧を取得する
-         *
-         * @return PDOStatement
-         */
-        function getRoom()
-        {
-            return $this->pdo->query("SELECT * FROM room");
-        }
-
-        /**
-         * 指定のルームを削除する
-         *
-         * @param $room
-         * @param $id
-         */
-        function deleteRoom($room, $id)
-        {
-            $this->pdo->query("DELETE FROM room WHERE room = '$room' AND id = '$id'");
-            $this->pdo->query("DROP TABLE $room");
-        }
-
-        /**
-         * DB内の位置情報を更新する
-         *
-         * @param $room
+         * @param $userId
+         * @param $password
          * @param $nickName
-         * @param $latitude
-         * @param $longitude
+         * @param $email
          *
          * @return PDOStatement
          */
-        function updatePosition($room, $nickName, $latitude, $longitude)
+        function signUp($userId, $password, $nickName, $email)
         {
-            return $this->pdo->query("UPDATE $room SET latitude = $latitude, longitude = $longitude WHERE joinUser = '$nickName'");
+            return $this->pdo->query("INSERT INTO users (id, password, nickname, email, img) VALUES ('$userId', '$password', '$nickName', '$email', 'https://nxtg-t.net/Alcoholparty/img/samune.png')");
         }
     }
 

@@ -48,7 +48,6 @@
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8H1PLQFo84FkLoVfVkpf-2i9FQc-YDRs"></script>
     <script type="text/javascript" src="js/realtimeFlush.js"></script>
-    <!--<script type="text/javascript" src="js/watch-position.js"></script>-->
     <script type="text/javascript" src="js/getPosition.js"></script>
 
     <script type="text/javascript">
@@ -97,54 +96,67 @@
             </p>
 
             <div class="col-md-4">
-                <form method="post" action="<?php print($_SERVER['PHP_SELF']) ?>">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">ルーム名</div>
-                        <div class="panel-body"><?= $roomInfo["room"] ?></div>
+                <div class="list-group" id="addordionMenu">
+                    <a class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#accordionMenu" href="#infoMenu">
+                        詳細情報 ※クリックで展開
+                    </a>
+                    <div class="collapse" id="infoMenu">
+                        <form class="list-group-item" method="post" action="<?php print($_SERVER['PHP_SELF']) ?>">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">ルーム名</div>
+                                <div class="panel-body"><?= $roomInfo["room"] ?></div>
 
-                        <div class="panel-heading">ルーム開設者</div>
-                        <div class="panel-body"><?= $roomInfo["nickname"] ?></div>
+                                <div class="panel-heading">ルーム開設者</div>
+                                <div class="panel-body"><?= $roomInfo["nickname"] ?></div>
 
-                        <div class="panel-heading">場所</div>
-                        <div class="panel-body">
-                            <?= $roomInfo["place"] ?>
-                            <input type="text" class="form-control" id="place" name="place"
-                                   placeholder="集合場所or開催場所を記入">
-                        </div>
+                                <div class="panel-heading">場所</div>
+                                <div class="panel-body">
+                                    <?= $roomInfo["place"] ?>
+                                    <input type="text" class="form-control" id="place" name="place"
+                                           placeholder="集合場所or開催場所を記入">
+                                </div>
 
-                        <div class="panel-heading">集合時間</div>
-                        <div class="panel-body">
-                            <?= $roomInfo["date"] ?>
-                            <input type="text" class="form-control" id="datetime" name="datetime"
-                                   placeholder="集合時間を記入">
-                        </div>
+                                <div class="panel-heading">集合時間</div>
+                                <div class="panel-body">
+                                    <?= $roomInfo["date"] ?>
+                                    <input type="text" class="form-control" id="datetime" name="datetime"
+                                           placeholder="YYYY-MM-dd hh:mm:ss">
+                                </div>
 
-                        <div class="panel-heading">予算</div>
-                        <div class="panel-body">
-                            <?= $roomInfo["budget"] ?>
-                            <input type="text" class="form-control" id="budget" name="budget" placeholder="予算を記入">
-                        </div>
+                                <div class="panel-heading">予算</div>
+                                <div class="panel-body">
+                                    <?= $roomInfo["budget"] ?>
+                                    <input type="text" class="form-control" id="budget" name="budget" placeholder="予算を記入">
+                                </div>
 
-                        <div class="panel-heading">備考</div>
-                        <div class="panel-body">
-                            <?= $roomInfo["note"] ?>
-                            <input type="text" class="form-control" id="note" name="note" placeholder="備考を記入">
-                        </div>
+                                <div class="panel-heading">備考</div>
+                                <div class="panel-body">
+                                    <?= $roomInfo["note"] ?>
+                                    <input type="text" class="form-control" id="note" name="note" placeholder="備考を記入">
+                                </div>
+                            </div>
+                            <div class="col-md-12" align="right">
+                                <p><input type="submit" id="update" name="update" class="btn-primary btn-lg" value="更新"></p>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-md-12" align="right">
-                        <p><input type="submit" id="update" name="update" class="btn-primary btn-lg" value="更新"></p>
-                    </div>
-                </form>
+                </div>
             </div>
 
             <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">接続中のユーザ</div>
-                    <ul class="list-group">
-                        <div id="after" style="display:none">
-                            <div id="after_detail"></div>
+                <div class="list-group" id="addordionJoinMenu">
+                    <a class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#accordionJoinMenu" href="#joinMenu">
+                        接続中ユーザ ※クリックで展開
+                    </a>
+                    <div class="collapse" id="joinMenu">
+                        <div class="list-group-item panel panel-default">
+                            <ul class="list-group">
+                                <div id="after" style="display:none">
+                                    <div id="after_detail"></div>
+                                </div>
+                            </ul>
                         </div>
-                    </ul>
+                    </div>
                 </div>
             </div>
 
@@ -165,37 +177,52 @@
             ?>
 
             <div class="col-md-4">
-                <form method="post" action="">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">ルーム名</div>
-                        <div class="panel-body"><?= $roomInfo["room"] ?></div>
+                <div class="list-group" id="addordionMenu">
+                    <a class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#accordionMenu" href="#infoMenu">
+                        詳細情報 ※クリックで展開
+                    </a>
+                    <div class="collapse" id="infoMenu">
+                        <!--<p class="list-group-item">-->
+                        <form class="list-group-item" method="post" action="">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">ルーム名</div>
+                                <div class="panel-body"><?= $roomInfo["room"] ?></div>
 
-                        <div class="panel-heading">ルーム開設者</div>
-                        <div class="panel-body"><?= $roomInfo["nickname"] ?></div>
+                                <div class="panel-heading">ルーム開設者</div>
+                                <div class="panel-body"><?= $roomInfo["nickname"] ?></div>
 
-                        <div class="panel-heading">場所</div>
-                        <div class="panel-body"><?= $roomInfo["place"] ?></div>
+                                <div class="panel-heading">場所</div>
+                                <div class="panel-body"><?= $roomInfo["place"] ?></div>
 
-                        <div class="panel-heading">集合時間</div>
-                        <div class="panel-body"><?= $roomInfo["date"] ?></div>
+                                <div class="panel-heading">集合時間</div>
+                                <div class="panel-body"><?= $roomInfo["date"] ?></div>
 
-                        <div class="panel-heading">予算</div>
-                        <div class="panel-body"><?= $roomInfo["budget"] ?></div>
+                                <div class="panel-heading">予算</div>
+                                <div class="panel-body"><?= $roomInfo["budget"] ?></div>
 
-                        <div class="panel-heading">備考</div>
-                        <div class="panel-body"><?= $roomInfo["note"] ?></div>
+                                <div class="panel-heading">備考</div>
+                                <div class="panel-body"><?= $roomInfo["note"] ?></div>
+                            </div>
+                        </form>
+                        <!--</p>-->
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">接続中のユーザ</div>
-                    <ul class="list-group">
-                        <div id="after" style="display:none">
-                            <div id="after_detail"></div>
+                <div class="list-group" id="addordionJoinMenu">
+                    <a class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#accordionJoinMenu" href="#joinMenu">
+                        接続中ユーザ ※クリックで展開
+                    </a>
+                    <div class="collapse" id="joinMenu">
+                        <div class="list-group-item panel panel-default">
+                            <ul class="list-group">
+                                <div id="after" style="display:none">
+                                    <div id="after_detail"></div>
+                                </div>
+                            </ul>
                         </div>
-                    </ul>
+                    </div>
                 </div>
             </div>
 
