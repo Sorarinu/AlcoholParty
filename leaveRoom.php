@@ -16,4 +16,6 @@
     $db = new db();
 
     $db->removeRoomMember($_SESSION["nickName"], isset($_SESSION["roomName"]) ? $_SESSION["roomName"] : null);
+    unset($_SESSION["roomName"]);
+    $_POST = array();
 ?>
