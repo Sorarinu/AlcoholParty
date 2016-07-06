@@ -12,12 +12,14 @@
 
     require_once 'chromelog.php';
     require_once 'db.php';
+    require_once 'mail.php';
 
     $db = new db();
+    $mail = new sendMail();
 
     $roomInfo = $db->getRoomInfo($_SESSION["roomName"]);
     $result = $db->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
-
+ChromePhp::log($_SESSION);
     if (isset($_POST["update"]))
     {
         $result = $db->updateRoomInfo(
@@ -29,6 +31,13 @@
         );
         $roomInfo = $db->getRoomInfo($_SESSION["roomName"]);
         $_POST = array();
+    }
+
+    if(isset($_POST["delRoom"]))
+    {
+        $db->deleteRoom($_SESSION["roomName"], $_SESSION["id"]);
+        $mail->sendDeleteRoom($_SESSION["email"], $_SESSION["nickName"], $_SESSION["roomName"]);
+        header("Location: deleteRoom.php");
     }
 ?>
 <!DOCTYPE html>
@@ -91,7 +100,10 @@
 
             <p>
                 <div class="col-md-12 text-right">
-                    <button type="button" class="btn-danger" onclick="location.href='deleteRoom.php'">ルームを削除する</button><br><br>
+                    <form action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
+                        <input type="submit" class="btn-danger" id="delRoom" name="delRoom" value="ルームを削除">
+                    </form>
+                    <br><br>
                 </div>
             </p>
 
@@ -135,7 +147,7 @@
                                     <input type="text" class="form-control" id="note" name="note" placeholder="備考を記入">
                                 </div>
                             </div>
-                            <div class="col-md-12" align="right">
+                            <div align="right">
                                 <p><input type="submit" id="update" name="update" class="btn-primary btn-lg" value="更新"></p>
                             </div>
                         </form>
