@@ -5,22 +5,6 @@
      * Date: 2016/06/22
      * Time: 20:21
      */
-    if (!isset($_SESSION)) {
-        session_start();
-    }
-
-    require_once 'chromelog.php';
-    require_once 'db.php';
-    require_once 'mail.php';
-
-    $db = new db();
-    $mail = new snedMail();
-
-    $db->deleteRoom($_SESSION["roomName"], $_SESSION["id"]);
-    $mail->sendDeleteRoom($_SESSION["mail"], $_SESSION["nickName"], $_SESSION["roomName"]);
-
-    unset($_SESSION["roomName"]);
-    $msg = "ルームを削除しました";
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +32,7 @@
 </div>
 
 <div class="container text-center">
-    <?php echo $msg ?><br>自動的ににトップページへ移動します．
+    ルームを削除しました．<br>自動的ににトップページへ移動します．
 </div>
 </body>
 </html>
