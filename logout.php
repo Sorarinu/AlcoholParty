@@ -22,7 +22,7 @@
     }
 
     $_SESSION = array();
-    @session_destroy();
+    session_destroy();
 ?>
 
 <!DOCTYPE html>
