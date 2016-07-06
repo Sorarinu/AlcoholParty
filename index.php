@@ -14,7 +14,7 @@
     require_once 'db.php';
 
     $db = new db();
-    $mail = new snedMail();
+    $mail = new sendMail();
 
     if (isset($_POST["create"])) {
         if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "") {
@@ -59,6 +59,8 @@
             $roomPassword = filter_input(INPUT_POST, "roomPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $result = $db->join($roomName, $roomPassword);
+
+            unset($_SESSION["roomName"]);   //ゴミを破棄
 
             if ($result !== null) {
                 $_SESSION += array("roomName" => $roomName);
@@ -287,17 +289,44 @@
                             <div class="panel-heading">ルーム一覧</div>
                                 <?php
                                     $rooms = $db->getRoom();
+                                    $i = 0;
 
                                     foreach($rooms as $room)
                                     {
                                 ?>
                                         <ul class="list-group">
                                             <li class="list-group-item">
-                                                <div style="float:left"><?= $room["room"]; ?></div>
-                                                <div align="right"><button class="btn btn-sm btn-success" onclick="location.href='index.php'">接続</button></div>
+                                                <div style="float:left"><?= $room["room"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;開設者：<?= $room["nickname"]; ?></div>
+                                                <div align="right"><button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalPass<?= $i ?>">接続</button></div>
+
+                                                <div class="modal fade" id="modalPass<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <form method="post" action="<?php print($_SERVER['PHP_SELF']) ?>">
+                                                                <input type="hidden" name="roomName" id="roomName" value="<?= $room["room"]; ?>">
+
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    <h4 class="modal-title" id="myModalLabel">ルーム「<?= $room["room"]; ?>」へ接続</h4>
+                                                                </div>
+
+                                                                <div class="modal-body">
+                                                                    パスワードを入力してください<br>
+                                                                    <input type="password"  name="roomPassword" class="form-control">
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+                                                                    <input type="submit" name="join" id="join" class="btn btn-primary" value="接続">
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </li>
                                         </ul>
                                 <?php
+                                        $i++;
                                     }
                                 ?>
                         </div>
@@ -308,11 +337,6 @@
             <div class="tab-pane" id="tab2">
                 <!-- ユーザプロフィール表示画面 -->
                 <?php require_once 'userInfoPage.php'; ?>
-
-                <!-- 設定画面 -->
-                <div class="col-md-8">
-
-                </div>
             </div>
 
             <div class="tab-pane" id="tab3">
