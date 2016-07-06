@@ -244,48 +244,6 @@
                     <!-- 既存ルームへの接続 -->
                     <div class="col-md-6">
                         <div class="panel panel-info">
-                            <div class="panel-heading">
-                                既存のルームに接続する
-                            </div>
-
-                            <div class="panel-body">
-                                <?php
-                                    if (isset($joinMsg))
-                                    {
-                                        if ($joinMsg !== "")
-                                        {
-                                            ?>
-                                            <div class="alert alert-danger" role="alert"><?= $joinMsg ?></div>
-                                            <?php
-                                        }
-                                    }
-                                ?>
-                                <form action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
-                                    <p>
-
-                                    <div class="input-group">
-                                        <span class="input-group-addon">ルーム名</span>
-                                        <input type="text" name="roomName" class="form-control" placeholder="ルーム名を入力">
-                                    </div>
-                                    </p>
-                                    <p>
-
-                                    <div class="input-group">
-                                        <span class="input-group-addon">パスワード</span>
-                                        <input type="password" name="roomPassword" class="form-control" placeholder="パスワードを入力">
-                                    </div>
-                                    </p>
-                                    <p>
-                                        <input type="submit" name="join" id="join" class="btn btn-primary btn-lg center-block"
-                                               value="ルームに接続">
-                                    </p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="panel panel-info">
                             <div class="panel-heading">ルーム一覧</div>
                                 <?php
                                     $rooms = $db->getRoom();
