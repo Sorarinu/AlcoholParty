@@ -6,11 +6,10 @@
      * Date: 2016/06/24
      * Time: 17:36
      */
-    class snedMail
+    class sendMail
     {
         function initMail()
         {
-            mb_language("ja");
             mb_internal_encoding("UTF-8");
         }
 
