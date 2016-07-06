@@ -43,7 +43,7 @@ ChromePhp::log($_SESSION);
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <title>飲み会やろうぜ</title>
+    <title>Alcohol Party</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -77,7 +77,7 @@ ChromePhp::log($_SESSION);
     <div class="jumbotron text-center">
         <p>
 
-        <h1><a href="index.php">飲み会やろうぜ 待ち合わせサイト</a></h1></p>
+        <h1><a href="index.php">Alcohol Party</a></h1></p>
         <p>飲み会の待ち合わせで「お前ら何処だよ？？？」「お前こそ何処だよ？？？？」を解消するためのサービスです。</p>
     </div>
 </div>
