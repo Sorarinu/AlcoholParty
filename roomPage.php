@@ -131,8 +131,7 @@ ChromePhp::log($_SESSION);
                                 <div class="panel-heading">集合時間</div>
                                 <div class="panel-body">
                                     <?= $roomInfo["date"] ?>
-                                    <input type="text" class="form-control" id="datetime" name="datetime"
-                                           placeholder="YYYY-MM-dd hh:mm:ss">
+                                    <input type="datetime-local" class="form-control" id="datetime" name="datetime">
                                 </div>
 
                                 <div class="panel-heading">予算</div>
