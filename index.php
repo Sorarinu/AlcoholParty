@@ -292,7 +292,10 @@
                                     {
                                 ?>
                                         <ul class="list-group">
-                                            <li class="list-group-item"><?= $room["room"]; ?><div align="right"><button class="btn btn-success" onclick="location.href='index.php'">接続</button></div></li>
+                                            <li class="list-group-item">
+                                                <div style="float:left"><?= $room["room"]; ?></div>
+                                                <div align="right"><button class="btn btn-sm btn-success" onclick="location.href='index.php'">接続</button></div>
+                                            </li>
                                         </ul>
                                 <?php
                                     }
