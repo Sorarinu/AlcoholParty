@@ -12,9 +12,13 @@
     require_once 'mail.php';
     require_once 'chromelog.php';
     require_once 'db.php';
+    require_once 'hotpepper.php';
 
     $db = new db();
     $mail = new sendMail();
+    $hotpepper = new hotpepper();
+
+   // ChromePhp::log($hotpepper->getStoreData());
 
     if (isset($_POST["create"])) {
         if ($_POST["roomName"] !== "" && $_POST["roomPassword"] !== "" && $_POST["confRoomPassword"] !== "") {
@@ -298,7 +302,27 @@
             </div>
 
             <div class="tab-pane" id="tab3">
-                <p>かみんぐすーん</p>
+                <div class="col-md-4 well well-sm">
+                    <div class="col-md-3">
+                        <img src="http://blogs.c.yimg.jp/res/blog-e5-2a/kamikamiwayo/folder/519343/27/12015227/img_1_m?1420030374" width="100" height="100" alt="サムネイル">
+                    </div>
+                    <div class="col-md-8">
+                        <h4>大衆酒場　ちばチャン　八王子店</h4><br>
+                        <hr color="black">
+                        東京都八王子市東町11-6 園ビル1F<br>
+                        <hr color="black">
+                        JR八王子駅北口 徒歩3分 宴会は飲み放題付き3000円のバカ盛りコースが人気!貸し切りなら100名可能です!昼宴会も<br>
+                        <hr color="black">
+                        ☎：050-5852-7046<br>
+                        <hr color="black">
+                        月-日、祝日、祝前日: 18:00-翌3:00 (料理L.O. 翌2:00 ドリンクL.O. 翌2:00)<br>
+                        18:00～翌3:00(ラストオーダー2:00)<br>
+                        ★宴会開始時間のご相談はお気軽に!例えば17時から開始など応相談<br>
+                        ◆名物「バカ盛り」は圧巻のボリューム!◆大人数程幹事にお得なクーポン有!<br>
+                        <hr color="black">
+                        オスメ度：★★★★☆
+                    </div>
+                </div>
             </div>
         </div>
         <?php
