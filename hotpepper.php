@@ -8,8 +8,6 @@
 
 require_once 'chromelog.php';
 
-static $API_KEY = "1e2f4004931d07c9";
-
 class hotpepper
 {
     function __construct()
@@ -18,14 +16,9 @@ class hotpepper
 
     function getStoreData()
     {
-        global $API_KEY;
-        ChromePhp::log($API_KEY);
-        $url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
-        $param = ['key' => $API_KEY, 'name' => '味道苑'];
-
-        $res = file_get_contents($url . http_build_query($param));
-        $result = json_decode($res);
-
-        ChromePhp::log($result, true);
+        $API_KEY = "1e2f4004931d07c9";
+        $url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1";
+        $param = ['key' => $API_KEY, 'name' => 'ちばチャン', 'address' => '八王子'];
+        $rows = json_encode(file_get_contents($url . "?key=" . $param["key"] . "&name=" . $param["name"] . "&address=" . $param["address"]));
     }
 }

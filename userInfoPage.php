@@ -13,6 +13,21 @@
     require_once 'db.php';
 
     $db = new db();
+
+    if(isset($_POST["update"]))
+    {
+        $user = $db->getUserData($_SESSION["id"]);
+
+        foreach ($user as $item) {
+            $result = $db->updateUserData(
+                $_SESSION["id"],
+                $_POST["nickname"] !== "" ? $_POST["nickname"] : $item["nickname"],
+                $_POST["email"] !== "" ? $_POST["email"] : $item["email"],
+                $_POST["imageURL"] !== "" ? $_POST["imageURL"] : $item["img"]
+            );
+            $_POST = array();
+        }
+    }
 ?>
 <div class="col-md-1"></div>
 <div class="col-md-3 text-center">
@@ -54,13 +69,20 @@
 <div class="col-md-1"></div>
 <div class="col-md-6">
     <br>
-    <form action="" method="post">
+    <form action="<?php print($_SERVER['PHP_SELF']) ?>" method="post">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Edit Profile
             </div>
             <div class="panel-body">
-                パネルの内容
+                <h3 class="text-center">サムネイル登録</h3>
+                <input type="text" name="imageURL" id="imageURL" class="form-control" placeholder="画像のURLを入力">
+                <br>
+                <h3 class="text-center">ニックネームの変更</h3>
+                <input type="text" name="nickname" id="nickname" class="form-control" placeholder="新しいニックネームを入力">
+                <br>
+                <h3 class="text-center">メールアドレスの変更</h3>
+                <input type="text" name="email" id="email" class="form-control" placeholder="新しいメールアドレスを入力">
             </div>
             <div class="panel-footer" align="right">
                 <input type="submit" id="update" name="update" class="btn btn-info btn-lg" value="更新">

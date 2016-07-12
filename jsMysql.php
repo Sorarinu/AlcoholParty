@@ -23,14 +23,17 @@
 
         foreach($db->getRoomMember($_SESSION["roomName"]) as $row)
         {
-            $users[] = addList($row["joinUser"], $row["latitude"], $row["longitude"]);
+            foreach($db->getUserDataAsName($row["joinUser"]) as $userData)
+            {
+                $users[] = addList($row["joinUser"], $userData["img"], $row["latitude"], $row["longitude"]);
+            }
         }
         echo json_encode($users, JSON_UNESCAPED_UNICODE);
     }
 
-    function addList($user, $latitude, $longitude)
+    function addList($user, $img, $latitude, $longitude)
     {
-        return array("session" => $_SESSION["nickName"], "user" => $user, "latitude" => $latitude, "longitude" => $longitude);
+        return array("session" => $_SESSION["nickName"], "user" => $user, "img" => $img, "latitude" => $latitude, "longitude" => $longitude);
     }
 ?>
 

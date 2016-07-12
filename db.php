@@ -149,6 +149,11 @@
             return $this->pdo->query("SELECT * FROM users WHERE id='$userId'");
         }
 
+        function getUserDataAsName($nickName)
+        {
+            return $this->pdo->query("SELECT * FROM users WHERE nickName='$nickName'");
+        }
+
         /**
          * 既存ルームに接続する
          *
@@ -235,6 +240,11 @@
             return $this->pdo->query("UPDATE room SET place = '$place', date = '$date', budget = '$budget', note = '$note' WHERE room = '$room'");
         }
 
+        function updateUserData($id, $nickName, $email, $image)
+        {
+            return $this->pdo->query("UPDATE users SET nickname = '$nickName', email = '$email', img = '$image' WHERE id = '$id'");
+        }
+
         /**
          * DB内の位置情報を更新する
          *
@@ -278,7 +288,7 @@
          */
         function signUp($userId, $password, $nickName, $email)
         {
-            return $this->pdo->query("INSERT INTO users (id, password, nickname, email, img) VALUES ('$userId', '$password', '$nickName', '$email', 'https://nxtg-t.net/Alcoholparty/img/samune.png')");
+            return $this->pdo->query("INSERT INTO users (id, password, nickname, email, img) VALUES ('$userId', '$password', '$nickName', '$email', 'img/samune.png')");
         }
     }
 

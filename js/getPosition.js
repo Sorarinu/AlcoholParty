@@ -49,8 +49,13 @@ jQuery(function ($) {
 
                 for(var i = 0; i < users.length; i++){
                     var currentPosition = new google.maps.LatLng(users[i]["latitude"], users[i]["longitude"]);
+                    var image = {
+                        url: users[i]["img"],
+                        scaledSize: new google.maps.Size(31, 31)
+                    };
                     currentMarker = new google.maps.Marker({
-                        position: currentPosition
+                        position: currentPosition,
+                        icon: image
                     });
                     var markerInfo = new google.maps.InfoWindow({
                        content: users[i]["user"]
@@ -61,15 +66,6 @@ jQuery(function ($) {
                 }
                 mapBounds = maps.getBounds().getSouthWest();
                 maps.setCenter(google.maps.LatLng(mapBounds.lat(), mapBounds.lng()));
-                /*maps.addListener('center_changed', function() {
-                    //console.log("Map Center Change!!");
-                    window.setTimeout(function () {
-                        maps.setCenter(maps.getCenter());
-                    }, 1000);
-                    //maps.setCenter(maps.getCenter());
-                });*/
-                //maps.setCenter(maps.getCenter());
-                //console.log("set center: " + maps.getCenter().toString());
             }
         };
 
