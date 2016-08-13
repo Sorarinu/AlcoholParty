@@ -10,7 +10,7 @@
         session_start();
     }
 
-    require_once 'chromelog.php';
+    //require_once 'chromelog.php';
     require_once 'db.php';
     require_once 'mail.php';
 
@@ -19,7 +19,7 @@
 
     $roomInfo = $db->getRoomInfo($_SESSION["roomName"]);
     $result = $db->joinRoomMember($_SESSION["nickName"], $_SESSION["roomName"]);
-ChromePhp::log($_SESSION);
+//ChromePhp::log($_SESSION);
     if (isset($_POST["update"]))
     {
         $result = $db->updateRoomInfo(
@@ -45,6 +45,7 @@ ChromePhp::log($_SESSION);
 <head>
     <title>Alcohol Party</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">

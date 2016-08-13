@@ -5,7 +5,7 @@
      * Date: 2016/06/17
      * Time: 17:08
      */
-    require_once 'chromelog.php';
+    //require_once 'chromelog.php';
 
     class db
     {
@@ -17,7 +17,7 @@
         {
             try
             {
-                $this->pdo = new PDO('mysql:host=nxtg-t.net;dbname=projectP;charset=utf8;', 'projectP', 'projectP', array(PDO::ATTR_EMULATE_PREPARES => false));
+                $this->pdo = new PDO('mysql:host=localhost;dbname=projectP;charset=utf8;', 'projectP', 'projectP', array(PDO::ATTR_EMULATE_PREPARES => false));
                 $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             } catch (PDOException $ex)

@@ -11,7 +11,7 @@
     }
 
     require_once 'db.php';
-    require_once 'chromelog.php';
+    //require_once 'chromelog.php';
 
     $db = new db();
 

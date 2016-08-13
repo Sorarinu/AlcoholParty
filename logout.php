@@ -10,7 +10,7 @@
         session_start();
     }
 
-    require_once 'chromelog.php';
+    //require_once 'chromelog.php';
     require_once 'leaveRoom.php';
 
     if (!isset($_SESSION["id"]))

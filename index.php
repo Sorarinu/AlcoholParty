@@ -10,7 +10,7 @@
     }
 
     require_once 'mail.php';
-    require_once 'chromelog.php';
+    //require_once 'chromelog.php';
     require_once 'db.php';
     require_once 'hotpepper.php';
 
@@ -141,7 +141,7 @@
 
     }
     else {
-        ChromePhp::log("Error..");
+        //ChromePhp::log("Error..");
     }
 ?>
 <!DOCTYPE html>

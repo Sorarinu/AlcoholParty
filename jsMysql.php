@@ -10,14 +10,14 @@
         session_start();
     }
 
-    require_once 'chromelog.php';
+    //require_once 'chromelog.php';
     require_once 'db.php';
     $db = new db();
 
     if(isset($_POST))
     {
-        ChromePhp::log("latitude=" . $_POST["latitude"] . " " . $_POST["longitude"]);
-        ChromePhp::log("jsMysql.php: " . $_SESSION["nickName"]);
+        //ChromePhp::log("latitude=" . $_POST["latitude"] . " " . $_POST["longitude"]);
+        //ChromePhp::log("jsMysql.php: " . $_SESSION["nickName"]);
         $db->updatePosition($_SESSION["roomName"], $_SESSION["nickName"], $_POST["latitude"], $_POST["longitude"]);
         $users = array();
 
